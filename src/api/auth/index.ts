@@ -1,4 +1,4 @@
-import {AxiosInstance, AxiosPromise} from "axios";
+import {AxiosPromise} from "axios";
 import {ILoginRequest, ILoginResponse} from "@/api/auth/types";
 import {axiosInstance} from "@/api/instance";
 import Endpoints from "@/api/endpoints";

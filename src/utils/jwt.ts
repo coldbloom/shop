@@ -1,4 +1,5 @@
 import {getUnixTime} from "@/utils/date";
+import {logoutUser} from "@/store/features/auth/actionCreators";
 
 export interface IAuthTokenInfo {
     exp: number
@@ -21,7 +22,7 @@ export const isExpireAccessToken = (accessToken: string | null): boolean => {
         const tokenLeftTime = exp - getUnixTime()
 
         const minLifeTimeForUpdate = (exp - iat) * LIFE_TIME_TO_UPDATE_MULTIPLIER
-
+        //console.log(tokenLeftTime, minLifeTimeForUpdate)
         return tokenLeftTime < minLifeTimeForUpdate
     } catch (e) {
         console.error(e)

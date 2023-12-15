@@ -16,7 +16,6 @@ axiosInstance.interceptors.request.use(async (config) => {
     }
 
     const accessToken = await store.dispatch(getAccessToken())
-
     if (accessToken) {
         const autharization = `Bearer ${accessToken}`
 
@@ -29,10 +28,12 @@ axiosInstance.interceptors.request.use(async (config) => {
     return config
 })
 
-axiosInstance.interceptors.response.use(
+axiosInstance.interceptors.response.use( // отрабатывает мгновенный выход в случае взлома
     (response) => response,
     (error: AxiosError) => {
         const isLoggedIn = !!store.getState().auth.authData.accessToken
+
+        console.log('listen response')
 
         if ((error.response?.status === 401) && isLoggedIn && error.request.url !== Endpoints.AUTH.LOGOUT) {
             store.dispatch(logoutUser())

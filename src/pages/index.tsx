@@ -11,7 +11,7 @@ export default function Home() {
   const dispatch = useDispatch();
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+      className={`flex min-h-screen flex-col items-center justify-between p-24 w-full ${inter.className}`}
     >
       <h1 className='bg-amber-400'>Main</h1>
       <h1 className='text-2xl'>{count}</h1>

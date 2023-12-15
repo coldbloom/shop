@@ -14,6 +14,8 @@ export const getAccessToken = () =>
         try {
             const accessToken = store.getState().auth.authData.accessToken
 
+            //console.log('лежит ли accessToken в store на Profile: ', accessToken && 'да', accessToken)
+
             if (!accessToken || isExpireAccessToken(accessToken)) {
                 if (refreshTokenRequest === null) {
                     refreshTokenRequest = refresh()
@@ -26,7 +28,7 @@ export const getAccessToken = () =>
 
                 return res.data.accessToken
             }
-            return 'ds'
+            return accessToken
         } catch (e) {
             console.error(e)
 
