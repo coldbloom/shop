@@ -7,7 +7,7 @@ const Modal = ({children, close}: {children: React.ReactNode, close: () => void}
             onClick={close}
         >
             <div
-                className="absolute top-[20%] left-[50%] translate-x-[-50%]"
+                className="h-fit rounded-lg absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
                 onClick={e => e.stopPropagation()}
             >
                 {children}
