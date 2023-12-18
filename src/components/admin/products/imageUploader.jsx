@@ -1,18 +1,11 @@
 import React from 'react';
-import Image from "next/image"
 import {AiOutlineFileImage} from "react-icons/ai";
-import { MdDeleteOutline } from "react-icons/md";
+import ImageCardTest from "@/components/admin/products/imageCardTest";
 
-function textAbbreviation (text){
-    if (text.length > 25) {
-        return text.slice(0, 25) + '...'
-    }
-    return text
-}
 
 const ImageUploader = () => {
     const [images, setImages] = React.useState([]);
-    const [isDragging, setIsDragging] = React.useState(false);
+    const [currentImage, setCurrentImage] = React.useState(null)
     const fileInputRef = React.useRef(null);
 
     function selectFiles() {
@@ -28,6 +21,8 @@ const ImageUploader = () => {
                 setImages((prevImages) => [
                     ...prevImages,
                     {
+                        id: i,
+                        rating: i,
                         name: files[i].name,
                         url: URL.createObjectURL(files[i]),
                     },
@@ -42,9 +37,21 @@ const ImageUploader = () => {
         )
     }
 
+    const sortImages = (a, b) => {
+        if (a.rating > b.rating) {
+            return 1
+        } else {
+            return -1
+        }
+    }
+
+
+    React.useEffect(() => {
+        console.log(images)
+    }, [images])
+
     return (
         <div>
-
             <div className='w-full border-dashed border-2 rounded-lg cursor-pointer text-center flex flex-col items-center py-6'
                  onClick={selectFiles}
             >
@@ -63,24 +70,17 @@ const ImageUploader = () => {
             </div>
 
             <div className='container'>
-                {images.map((image, index) => (
-                    <div className='flex flex-row items-center justify-between'
-                         key={index}>
-                        <Image
-                            src={image.url}
-                            alt={image.name}
-                            width={50}
-                            height={50}
-                        />
-                        <p className='text-ellipsis'>
-                            {textAbbreviation(image.name)}
-                        </p>
-                        <MdDeleteOutline
-                            size={22}
-                            className='cursor-pointer'
-                            onClick={() => deleteImage(index)}
-                        />
-                    </div>
+                {images.sort(sortImages).map((image, index) => (
+                    <ImageCardTest
+                        key={index}
+                        image={image}
+                        index={index}
+                        deleteImage={deleteImage}
+                        images={images}
+                        setImages={setImages}
+                        currentImage={currentImage}
+                        setCurrentImage={setCurrentImage}
+                    />
                 ))}
             </div>
         </div>

@@ -2,7 +2,6 @@ import React from 'react';
 import {classNames} from "@/utils/classNames";
 import Modal from "@/utils/components/modal";
 import Combobox from "@/utils/components/combobox";
-import categories from "@/components/admin/categories";
 import {ICategoryResponse} from "@/api/category/types";
 import ImageUploader from "@/components/admin/products/imageUploader";
 
@@ -18,7 +17,7 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
             {
                 open &&
                 <Modal close={close}>
-                    <div className="max-w-[70vw] max-h-[80vh] overflow-y-auto rounded-lg">
+                    <div className="modal max-w-[70vw] max-h-[80vh] overflow-y-auto rounded-lg">
                         <div
                             className="bg-white text-left shadow-xl transition-all">
                             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">

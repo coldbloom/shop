@@ -9,3 +9,34 @@ input:focus-visible {
 textarea:focus-visible {
     outline: none;
 }
+
+/* Стили для скроллбара */
+
+.modal {
+    padding-right: -10px;
+    overflow: auto; /* Добавьте свойство overflow: auto для создания блока с прокруткой */
+    scrollbar-width: thin; /* Указывает толщину скроллбара. Можно изменить на 'auto' для использования стилизации скроллбара по умолчанию */
+    scrollbar-color: #bdbdbd #cacaca; /* Цвет ползунка и фона трека скроллбара */
+}
+
+.modal::-webkit-scrollbar {
+    /* Устанавливаем свой параметр для отображения скроллбара */
+    width: 10px;
+    /*background-color: transparent;*/
+    /*border-radius: 8px;*/
+    /*margin-right: 8px;*/
+    z-index: 100; /* Указываем z-index, чтобы скроллбар отображался поверх содержимого */
+}
+
+.modal::-webkit-scrollbar-thumb {
+    /* Устанавливаем параметры стилизации ползунка скроллбара */
+    background-color: #bdbdbd;
+    border-radius: 8px;
+}
+
+.modal::-webkit-scrollbar-track {
+    /* Устанавливаем параметры стилизации фона трека скроллбара */
+    background-color: #cacaca;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
