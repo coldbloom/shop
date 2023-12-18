@@ -1,6 +1,6 @@
 import React from 'react';
 import {ICategoryResponse} from "@/api/category/types";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import {MdKeyboardArrowDown} from "react-icons/md";
 import {classNames} from "@/utils/classNames";
 
 type ComboboxProps = {
@@ -9,13 +9,13 @@ type ComboboxProps = {
 const Combobox = ({categories}: ComboboxProps) => {
     const [isOpen, setIsOpen] = React.useState(false)
     const [selectedValue, setSelectedValue] = React.useState('')
-    const containerRef = React.useRef(null);
+    const containerRef = React.useRef<HTMLDivElement | null>(null);
 
     React.useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
             if (
                 containerRef.current &&
-                !containerRef.current.contains(event.target)
+                !containerRef.current.contains(event.target as Node)
             ) {
                 setIsOpen(false);
             }
@@ -40,7 +40,8 @@ const Combobox = ({categories}: ComboboxProps) => {
                 <MdKeyboardArrowDown className='ml-2' size={20}/>
             </div>
             {isOpen && (
-                <div className="absolute mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                <div
+                    className="absolute mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
                         {categories.map(category => (
                             <li key={category.id}

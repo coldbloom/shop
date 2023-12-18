@@ -37,27 +37,7 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
                                                     </label>
                                                     <div className="mt-2">
                                                         <input
-                                                            type="text"
-                                                            name="first-name"
-                                                            id="first-name"
-                                                            autoComplete="given-name"
                                                             className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        />
-                                                    </div>
-                                                </div>
-
-                                                <div className="sm:col-span-6">
-                                                    <label htmlFor="email"
-                                                           className="block text-sm font-medium leading-6 text-gray-900">
-                                                        Цена
-                                                    </label>
-                                                    <div className="mt-2">
-                                                        <input
-                                                            id="email"
-                                                            name="email"
-                                                            type="email"
-                                                            autoComplete="email"
-                                                            className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         />
                                                     </div>
                                                 </div>
@@ -69,6 +49,18 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
                                                     </label>
                                                     <div className="mt-2">
                                                         <Combobox categories={categories}/>
+                                                    </div>
+                                                </div>
+
+                                                <div className="sm:col-span-6">
+                                                    <label htmlFor="email"
+                                                           className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Цена
+                                                    </label>
+                                                    <div className="mt-2">
+                                                        <input
+                                                            className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        />
                                                     </div>
                                                 </div>
 
@@ -88,7 +80,7 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
                                                     {/*<p className="mt-3 text-sm leading-6 text-gray-600">Опишите товар.</p>*/}
                                                 </div>
 
-                                                <div className="col-span-full mt-2">
+                                                <div className="col-span-full mt-2 mb-4">
                                                     <ImageUploader />
                                                 </div>
 
