@@ -6,7 +6,7 @@ import {classNames} from "@/utils/classNames";
 type ComboboxProps = {
     data: ICategoryResponse[],
     value: ICategoryResponse | null,
-    setValue: React.Dispatch<React.SetStateAction<ICategoryResponse | null>>,
+    setValue: React.Dispatch<React.SetStateAction<any>>,
 }
 const Combobox = ({data, value, setValue}: ComboboxProps) => {
     const [isOpen, setIsOpen] = React.useState(false)
@@ -41,7 +41,7 @@ const Combobox = ({data, value, setValue}: ComboboxProps) => {
                 <MdKeyboardArrowDown className='ml-2' size={20}/>
             </div>
             {isOpen && (
-                <div className="absolute w-full shadow-xl mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
+                <div className="absolute w-full shadow-xl mt-2 bg-white divide-y divide-gray-100 rounded-lg dark:bg-gray-700">
                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
                         {data.map(item => (
                             <li key={item.id}

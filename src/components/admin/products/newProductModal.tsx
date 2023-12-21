@@ -52,30 +52,26 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
 
     const addNewCategoryFetch = React.useCallback(()=> {
         try {
-            // const data = new FormData()
-            //
-            // data.append('name', name)
-            // data.append('price', price)
-            // data.append('category', String(category && category.id))
-            // data.append('about', about)
-            //
-            // images.forEach((item, idx) => {
-            //     data.append(`item${idx + 1}`, item)
-            // })
-            //
-            // axios.post(`${Endpoints.PUBLIC.PRODUCT}`, data, {
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data',
-            //     },
-            // }).then((res) => {
-            //     console.log(res)
-            // }, (e) => {
-            //     console.log(e)
-            // })
+            const data = new FormData()
 
-            axios.post(`${Endpoints.PUBLIC.PRODUCT}`, {
-                'name': name
-            }).then(() => console.log('successful'), (e) => console.log(e, 'error'))
+            data.append('name', name)
+            data.append('price', price)
+            data.append('category', String(category && category.id))
+            data.append('about', about)
+
+            images.forEach((item, idx) => {
+                data.append(`item${idx + 1}`, item)
+            })
+
+            axios.post(`${Endpoints.PUBLIC.PRODUCT}`, data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }).then((res) => {
+                console.log(res)
+            }, (e) => {
+                console.log(e)
+            })
         } catch (e) {
             console.log(e)
         }
