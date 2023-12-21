@@ -12,6 +12,7 @@ function textAbbreviation (text){
 const ImageCardTest = ({image, index, deleteImage, images, setImages, currentImage, setCurrentImage}) => {
     function dragStartHandler(e, image) {
         setCurrentImage(image)
+
     }
 
     function dragLeaveHandler(e) {
@@ -19,12 +20,12 @@ const ImageCardTest = ({image, index, deleteImage, images, setImages, currentIma
     }
 
     function dragEndHandler(e) {
-
+        e.target.style.background = 'rgb(243 244 246)'
     }
 
     function dragOverHandler(e) {
-        e.preventDefault()
-        e.target.style.background = 'lightGray'
+        e.preventDefault();
+        e.target.style.background = 'gray'
     }
 
     function dropHandler(e, image) {
@@ -42,7 +43,7 @@ const ImageCardTest = ({image, index, deleteImage, images, setImages, currentIma
     }
 
     return (
-        <div className='flex flex-row items-center justify-between my-3 bg-gray-100 rounded-lg cursor-grab'
+        <div className='imageContainer flex flex-row items-center justify-between my-3 bg-gray-100 rounded-lg cursor-grab'
              draggable={true}
              onDragStart={(e) => dragStartHandler(e, image)}
              onDragLeave={(e) => dragLeaveHandler(e)}

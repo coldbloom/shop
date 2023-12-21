@@ -4,18 +4,19 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import {classNames} from "@/utils/classNames";
 
 type ComboboxProps = {
-    categories: ICategoryResponse[],
+    data: ICategoryResponse[],
+    value: ICategoryResponse | null,
+    setValue: React.Dispatch<React.SetStateAction<ICategoryResponse | null>>,
 }
-const Combobox = ({categories}: ComboboxProps) => {
+const Combobox = ({data, value, setValue}: ComboboxProps) => {
     const [isOpen, setIsOpen] = React.useState(false)
-    const [selectedValue, setSelectedValue] = React.useState('')
-    const containerRef = React.useRef(null);
+    const containerRef = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
             if (
                 containerRef.current &&
-                !containerRef.current.contains(event.target)
+                !containerRef.current.contains(event.target as Node)
             ) {
                 setIsOpen(false);
             }
@@ -35,22 +36,22 @@ const Combobox = ({categories}: ComboboxProps) => {
                  onClick={() => setIsOpen(!isOpen)}
             >
                 <p className="">
-                    {selectedValue || 'Выберите категорию'}
+                    {value ? value.name : 'Выберите категорию'}
                 </p>
                 <MdKeyboardArrowDown className='ml-2' size={20}/>
             </div>
             {isOpen && (
-                <div className="absolute mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                <div className="absolute w-full shadow-xl mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
-                        {categories.map(category => (
-                            <li key={category.id}
+                        {data.map(item => (
+                            <li key={item.id}
                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                 onClick={() => {
-                                    setSelectedValue(category.name)
+                                    setValue(item)
                                     setIsOpen(false)
                                 }}
                             >
-                                {category.name}
+                                {item.name}
                             </li>
                         ))}
                     </ul>

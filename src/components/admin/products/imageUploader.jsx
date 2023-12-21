@@ -2,9 +2,15 @@ import React from 'react';
 import {AiOutlineFileImage} from "react-icons/ai";
 import ImageCardTest from "@/components/admin/products/imageCardTest";
 
+const sortImages = (a, b) => {
+    if (a.rating > b.rating) {
+        return 1
+    } else {
+        return -1
+    }
+}
 
-const ImageUploader = () => {
-    const [images, setImages] = React.useState([]);
+const ImageUploader = ({images, setImages}) => {
     const [currentImage, setCurrentImage] = React.useState(null)
     const fileInputRef = React.useRef(null);
 
@@ -25,6 +31,7 @@ const ImageUploader = () => {
                         rating: i,
                         name: files[i].name,
                         url: URL.createObjectURL(files[i]),
+                        file: files[i],
                     },
                 ]);
             }
@@ -36,19 +43,6 @@ const ImageUploader = () => {
             prevImages.filter((_, i) => i !== index)
         )
     }
-
-    const sortImages = (a, b) => {
-        if (a.rating > b.rating) {
-            return 1
-        } else {
-            return -1
-        }
-    }
-
-
-    React.useEffect(() => {
-        console.log(images)
-    }, [images])
 
     return (
         <div>
