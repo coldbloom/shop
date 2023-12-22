@@ -22,13 +22,14 @@ const ImageUploader = ({images, setImages}) => {
         const files = event.target.files;
         if (files.length === 0) return;
         for (let i = 0; i < files.length; i++) {
+            //setImages(files[i])
             if (files[i].type.split('/')[0] !== 'image') continue;
             if (!images.some((e) => e.name === files[i].name)) {
                 setImages((prevImages) => [
                     ...prevImages,
                     {
                         id: i,
-                        rating: i,
+                        rating: i + 1,
                         name: files[i].name,
                         url: URL.createObjectURL(files[i]),
                         file: files[i],

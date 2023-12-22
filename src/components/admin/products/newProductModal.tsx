@@ -50,32 +50,28 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
         console.log(images)
     }, [images])
 
-    const addNewCategoryFetch = React.useCallback(()=> {
-        try {
-            const data = new FormData()
+    const addNewCategoryFetch = ()=> {
+        const data = new FormData()
 
-            data.append('name', name)
-            data.append('price', price)
-            data.append('category', String(category && category.id))
-            data.append('about', about)
+        data.append('name', name)
+        data.append('price', price)
+        data.append('categoryId', String(category && category.id))
+        data.append('about', about)
 
-            images.forEach((item, idx) => {
-                data.append(`item${idx + 1}`, item)
-            })
+        images.forEach((item, idx) => {
+            data.append(`order=${idx + 1}`, item.file)
+        })
 
-            axios.post(`${Endpoints.PUBLIC.PRODUCT}`, data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }).then((res) => {
-                console.log(res)
-            }, (e) => {
-                console.log(e)
-            })
-        } catch (e) {
+        axios.post(`${Endpoints.PUBLIC.PRODUCT}`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }).then((res) => {
+            console.log('Запрос отправлен', res)
+        }, (e) => {
             console.log(e)
-        }
-    }, [isDisabled])
+        })
+    }
 
     return (
         <>
