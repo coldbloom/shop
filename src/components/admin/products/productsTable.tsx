@@ -3,6 +3,8 @@ import {MdOutlineDelete, MdOutlineModeEdit} from "react-icons/md";
 import {IProductResponse} from "@/api/product/types";
 import Image from "next/image";
 import {ICategoryResponse} from "@/api/category/types";
+import axios from "axios";
+import Endpoints from "@/api/endpoints";
 
 const findCategoryName = (categories: ICategoryResponse[], categoryId: number) => {
     const category = categories.find(item => item.id === categoryId);
@@ -12,9 +14,23 @@ const findCategoryName = (categories: ICategoryResponse[], categoryId: number) =
 type ProductsTableType = {
     categories: ICategoryResponse[],
     products: IProductResponse[],
+    changeProduct: (array: IProductResponse[]) => void,
 }
 
-const ProductsTable = ({categories, products}: ProductsTableType) => {
+const ProductsTable = ({categories, products, changeProduct}: ProductsTableType) => {
+
+    const deleteProduct = (productId: number) => {
+        axios
+            .delete(`${Endpoints.PUBLIC.PRODUCT}/${productId}`)
+            .then(() => {
+                const newProducts = products.filter((product) => product.id !== productId)
+                changeProduct(newProducts)
+            })
+            .catch(() => console.log('Ошибка при удалении!'));
+    }
+    
+    console.log(products)
+    
     return (
         <div className='w-full'>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -41,8 +57,8 @@ const ProductsTable = ({categories, products}: ProductsTableType) => {
                 </tr>
                 </thead>
                 <tbody>
-                {products && products.map((product, idx) => (
-                    <tr key={idx} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                {products && products.map((product) => (
+                    <tr key={product.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {product.id}
                         </th>
@@ -77,7 +93,7 @@ const ProductsTable = ({categories, products}: ProductsTableType) => {
                                 <MdOutlineDelete
                                     size={22}
                                     className='cursor-pointer hover:text-black'
-                                    onClick={() => {}}
+                                    onClick={() => deleteProduct(product.id)}
                                 />
                             </div>
                         </th>

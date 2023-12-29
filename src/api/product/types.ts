@@ -7,5 +7,6 @@ export interface IProductResponse {
     categoryId: number,
     name: string,
     price: number,
+    about: string,
     images: IImage[]
 }

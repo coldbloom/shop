@@ -50,7 +50,7 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
         console.log(images)
     }, [images])
 
-    const addNewCategoryFetch = ()=> {
+    const addNewProduct = ()=> {
         const data = new FormData()
 
         data.append('name', name)
@@ -138,7 +138,7 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
                                         && 'pointer-events-none opacity-50',
                                         "inline-flex w-full justify-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 sm:ml-3 sm:w-auto"
                                     )}
-                                    onClick={() => addNewCategoryFetch()}
+                                    onClick={() => addNewProduct()}
                                 >
                                     Добавить
                                 </button>

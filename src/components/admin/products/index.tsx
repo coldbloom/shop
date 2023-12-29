@@ -25,6 +25,8 @@ const Products = () => {
 
     const [newProductModal, setNewProductModal] = React.useState(false)
 
+    const changeProduct = (newProducts: IProductResponse[]) => setProducts(newProducts)
+
     return (
         <div className='p-4'>
             <div className='flex flex-row justify-between pb-4 pl-6'>
@@ -42,7 +44,11 @@ const Products = () => {
                 categories={categories}
             />
 
-            <ProductsTable categories={categories} products={products}/>
+            <ProductsTable
+                categories={categories}
+                products={products}
+                changeProduct={changeProduct}
+            />
         </div>
     );
 };
