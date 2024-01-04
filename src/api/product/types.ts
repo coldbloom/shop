@@ -1,6 +1,7 @@
 interface IImage {
-    id: number,
+    order: number,
     path: string,
+    id: number
 }
 export interface IProductResponse {
     id: number,

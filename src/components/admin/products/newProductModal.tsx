@@ -8,19 +8,27 @@ import InputField from "@/utils/components/inputField";
 import TextAreaField from "@/utils/components/textAreaField/TextAreaField";
 import axios from "axios";
 import Endpoints from "@/api/endpoints";
+import {IProductResponse} from "@/api/product/types";
+import NameInputField from "@/utils/components/nameInputField/NameInputField";
 
 export interface IImage {
-
+    file: File,
+    id: number,
+    name: string,
+    rating: number,
+    url: string
 }
 
 type NewProductModalProps = {
     open: boolean,
     close: () => void,
     categories: ICategoryResponse[],
+    addNewProductChange: (newProduct: IProductResponse) => void
 }
 
-const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
+const NewProductModal = ({open, close, categories, addNewProductChange}: NewProductModalProps) => {
     const [name, setName] = React.useState('')
+    const [isValidName, setIsValidName] = React.useState<boolean | null>(null)
     const [price, setPrice] = React.useState('')
     const [category, setCategory] = React.useState<ICategoryResponse | null>(null)
     const [about, setAbout] = React.useState('')
@@ -39,16 +47,12 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
     }, [open])
 
     React.useEffect(() => {
-        if (name !== '' && price !== '' && category !== null && about !== '' && images.length !== 0) {
+        if (name !== '' && isValidName !== false && price !== '' && category !== null && about !== '' && images.length !== 0) {
             setIsDisabled(false)
         } else {
             setIsDisabled(true)
         }
-    }, [name, price, category, about, images])
-
-    React.useEffect(() => {
-        console.log(images)
-    }, [images])
+    }, [name, price, category, about, images, isValidName])
 
     const addNewProduct = ()=> {
         const data = new FormData()
@@ -58,7 +62,7 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
         data.append('categoryId', String(category && category.id))
         data.append('about', about)
 
-        images.forEach((item, idx) => {
+        images.forEach((item: IImage, idx) => {
             data.append(`order=${idx + 1}`, item.file)
         })
 
@@ -68,8 +72,10 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
             },
         }).then((res) => {
             console.log('Запрос отправлен', res)
-        }, (e) => {
-            console.log(e)
+            addNewProductChange(res.data)
+            close();
+        }).catch((error) => {
+            console.log(error, 'Ошибка на запрос создания продукта')
         })
     }
 
@@ -90,16 +96,23 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
                                             </div>
 
                                             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12">
+
                                                 <div className="sm:col-span-12">
-                                                    <InputField label={'Наименование товара'} value={name} setValue={setName} />
+                                                    <NameInputField
+                                                        name={name}
+                                                        setName={setName}
+                                                        isValidName={isValidName}
+                                                        setIsValidName={setIsValidName}
+                                                    />
                                                 </div>
 
                                                 <div className="sm:col-span-6">
-                                                    <InputField label={'Цена'} value={price} setValue={setPrice} />
+                                                    <InputField label={'Цена'} value={price} setValue={setPrice}/>
                                                 </div>
 
                                                 <div className="sm:col-span-6">
-                                                    <label className="block text-sm font-medium leading-6 text-gray-900">
+                                                    <label
+                                                        className="block text-sm font-medium leading-6 text-gray-900">
                                                         Категория
                                                     </label>
                                                     <div className="mt-2">
@@ -112,7 +125,8 @@ const NewProductModal = ({open, close, categories}: NewProductModalProps) => {
                                                 </div>
 
                                                 <div className="col-span-full">
-                                                    <TextAreaField label={'Описание'} value={about} setValue={setAbout}/>
+                                                    <TextAreaField label={'Описание'} value={about}
+                                                                   setValue={setAbout}/>
                                                 </div>
                                                 <div className="col-span-full mt-2">
                                                     <ImageUploader images={images} setImages={setImages}/>

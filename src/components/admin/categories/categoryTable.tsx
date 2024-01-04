@@ -38,15 +38,20 @@ const CategoryTable = ({categories, mutateCategories}: CategoryTableProps) => {
         })
     }
 
+    console.log(categories, 'Категории')
+
     return (
         <div className="w-full">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="w-full text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr className='w-full'>
-                    <th scope="col" className="px-6 py-3">
-                        Наименование категории
+                    <th scope="col" className="px-6 py-3 text-center">
+                        ID
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-center">
+                        Наименование
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-center">
                         Действия
                     </th>
                 </tr>
@@ -54,10 +59,13 @@ const CategoryTable = ({categories, mutateCategories}: CategoryTableProps) => {
                 <tbody>
                 {categories && categories.map((item, idx) => (
                     <tr key={idx} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex justify-center text-center">
+                            {item.id}
+                        </th>
+                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                             {item.name}
                         </th>
-                        <td className="px-6 py-4 flex flex-row">
+                        <td className="px-6 py-4 flex flex-row justify-center">
                             <MdOutlineModeEdit
                                 size={22}
                                 className='cursor-pointer mr-6 hover:text-black'

@@ -5,6 +5,8 @@ import Image from "next/image";
 import {ICategoryResponse} from "@/api/category/types";
 import axios from "axios";
 import Endpoints from "@/api/endpoints";
+import DeleteProductModal from "@/components/admin/products/deleteProductModal";
+import EditProductsModal from "@/components/admin/products/editProductsModal";
 
 const findCategoryName = (categories: ICategoryResponse[], categoryId: number) => {
     const category = categories.find(item => item.id === categoryId);
@@ -17,38 +19,49 @@ type ProductsTableType = {
     changeProduct: (array: IProductResponse[]) => void,
 }
 
-const ProductsTable = ({categories, products, changeProduct}: ProductsTableType) => {
+interface IDelProductModal {open: boolean, id: number | null}
+interface IEditProductModal {open: boolean, product: IProductResponse | null}
 
-    const deleteProduct = (productId: number) => {
-        axios
-            .delete(`${Endpoints.PUBLIC.PRODUCT}/${productId}`)
-            .then(() => {
-                const newProducts = products.filter((product) => product.id !== productId)
-                changeProduct(newProducts)
-            })
-            .catch(() => console.log('Ошибка при удалении!'));
+const ProductsTable = ({categories, products, changeProduct}: ProductsTableType) => {
+    const [delProductModal, setDelProductModal] = React.useState<IDelProductModal>({ open: false, id: null })
+    const [editProductModal, setEditProductModal] = React.useState<IEditProductModal>({ open: false, product: null })
+
+    const openDelProduct = (productId: number) => {
+        setDelProductModal({id: productId, open: true})
     }
-    
-    console.log(products)
+
+    const closeDelProduct = () => {
+        setDelProductModal({ ...delProductModal, open: false })
+    }
+
+    const openEditProduct = (product: IProductResponse) => {
+        setEditProductModal({ product: product, open: true })
+    }
+
+    const closeEditProduct = () => {
+        setEditProductModal({ ...editProductModal, open: false })
+    }
+
+    console.log(products, 'products array')
     
     return (
         <div className='w-full'>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="w-full text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr className='w-full'>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-center">
                         ID
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-center">
                         Изображения
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-center">
                         Наименование
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-center">
                         Категория
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-center">
                         Цена
                     </th>
                     <th scope="col" className="px-6 py-3">
@@ -59,10 +72,10 @@ const ProductsTable = ({categories, products, changeProduct}: ProductsTableType)
                 <tbody>
                 {products && products.map((product) => (
                     <tr key={product.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                             {product.id}
                         </th>
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex justify-center">
                             {
                                 product.images.length !== 0
                                 ? <Image
@@ -74,13 +87,13 @@ const ProductsTable = ({categories, products, changeProduct}: ProductsTableType)
                                 : <p>Изображений нет</p>
                             }
                         </th>
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                             {product.name}
                         </th>
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                             {categories && findCategoryName(categories, product.categoryId)}
                         </th>
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                             {product.price}
                         </th>
                         <th className="px-6 py-4">
@@ -88,12 +101,12 @@ const ProductsTable = ({categories, products, changeProduct}: ProductsTableType)
                                 <MdOutlineModeEdit
                                     size={22}
                                     className='cursor-pointer mr-6 hover:text-black'
-                                    onClick={() => {}}
+                                    onClick={() => openEditProduct(product)}
                                 />
                                 <MdOutlineDelete
                                     size={22}
                                     className='cursor-pointer hover:text-black'
-                                    onClick={() => deleteProduct(product.id)}
+                                    onClick={() => openDelProduct(product.id)}
                                 />
                             </div>
                         </th>
@@ -101,6 +114,24 @@ const ProductsTable = ({categories, products, changeProduct}: ProductsTableType)
                 ))}
                 </tbody>
             </table>
+
+            <DeleteProductModal
+                id={delProductModal.id}
+                isOpen={delProductModal.open}
+                close={closeDelProduct}
+                products={products}
+                changeProduct={changeProduct}
+            />
+
+            {
+                editProductModal.product !== null &&
+                <EditProductsModal
+                    isOpen={editProductModal.open}
+                    close={closeEditProduct}
+                    product={editProductModal.product}
+                    categories={categories}
+                />
+            }
         </div>
     );
 };

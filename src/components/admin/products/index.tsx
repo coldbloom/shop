@@ -1,6 +1,4 @@
 import React from 'react';
-import {useAppDispatch} from "@/store";
-import {getProfile} from "@/store/features/auth/actionCreators";
 import {IoIosAddCircleOutline} from "react-icons/io";
 import ProductsTable from "@/components/admin/products/productsTable";
 import NewProductModal from "@/components/admin/products/newProductModal";
@@ -27,6 +25,12 @@ const Products = () => {
 
     const changeProduct = (newProducts: IProductResponse[]) => setProducts(newProducts)
 
+    const addNewProduct = (newProducts: IProductResponse) => setProducts(prevState => {
+        console.log(newProducts, ' что здесь лежит')
+        return [...prevState, newProducts]
+    })
+
+
     return (
         <div className='p-4'>
             <div className='flex flex-row justify-between pb-4 pl-6'>
@@ -42,6 +46,7 @@ const Products = () => {
                 open={newProductModal}
                 close={() => setNewProductModal(false)}
                 categories={categories}
+                addNewProductChange={addNewProduct}
             />
 
             <ProductsTable

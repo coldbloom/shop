@@ -12,7 +12,6 @@ function textAbbreviation (text){
 const ImageCardTest = ({image, index, deleteImage, images, setImages, currentImage, setCurrentImage}) => {
     function dragStartHandler(e, image) {
         setCurrentImage(image)
-
     }
 
     function dragLeaveHandler(e) {
@@ -32,10 +31,12 @@ const ImageCardTest = ({image, index, deleteImage, images, setImages, currentIma
         e.preventDefault()
         setImages(images.map(item => {
             if (item.id === image.id) {
-                return {...item, rating: currentImage.rating}
+                console.log('item.id === image.id условие 1')
+                return {...item, order: currentImage.order}
             }
             if (item.id === currentImage.id) {
-                return {...item, rating: image.rating}
+                console.log('item.id === currentImage.id условие 2')
+                return {...item, order: image.order}
             }
             return item
         }))
@@ -52,7 +53,7 @@ const ImageCardTest = ({image, index, deleteImage, images, setImages, currentIma
              onDrop={(e) => dropHandler(e, image)}
         >
             <Image
-                src={image.url}
+                src={image.path}
                 alt={image.name}
                 width={50}
                 height={50}

@@ -3,7 +3,7 @@ import {AiOutlineFileImage} from "react-icons/ai";
 import ImageCardTest from "@/components/admin/products/imageCardTest";
 
 const sortImages = (a, b) => {
-    if (a.rating > b.rating) {
+    if (a.order > b.order) {
         return 1
     } else {
         return -1
@@ -18,20 +18,23 @@ const ImageUploader = ({images, setImages}) => {
         fileInputRef.current.click();
     }
 
+    React.useEffect(() => {
+        console.log(images, ' = images')
+    }, [images])
+
     function onFileSelect(event) {
         const files = event.target.files;
         if (files.length === 0) return;
         for (let i = 0; i < files.length; i++) {
-            //setImages(files[i])
             if (files[i].type.split('/')[0] !== 'image') continue;
             if (!images.some((e) => e.name === files[i].name)) {
                 setImages((prevImages) => [
                     ...prevImages,
                     {
                         id: i,
-                        rating: i + 1,
+                        order: images.length + 1,
                         name: files[i].name,
-                        url: URL.createObjectURL(files[i]),
+                        path: URL.createObjectURL(files[i]),
                         file: files[i],
                     },
                 ]);
