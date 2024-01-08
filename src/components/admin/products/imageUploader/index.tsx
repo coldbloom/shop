@@ -1,26 +1,23 @@
 import React from 'react';
+import {IImage} from "@/components/admin/products/newProductModal";
 import {AiOutlineFileImage} from "react-icons/ai";
-import ImageCardTest from "@/components/admin/products/imageCardTest";
+import ImageCard from "./ImageCard";
 
-const sortImages = (a, b) => {
-    if (a.order > b.order) {
-        return 1
-    } else {
-        return -1
-    }
+type ImageUploaderProps = {
+    images: IImage[],
+    setImages: (images: IImage[]) => void,
+    deleteImage: (index: number) => void,
 }
 
-const ImageUploader = ({images, setImages}) => {
-    const [currentImage, setCurrentImage] = React.useState(null)
+const ImageUploader = ({images, setImages, deleteImage}): ImageUploaderProps => {
     const fileInputRef = React.useRef(null);
+
+    const dragImage = React.useRef<number>(0)
+    const draggedOverImage = React.useRef<number>(0)
 
     function selectFiles() {
         fileInputRef.current.click();
     }
-
-    React.useEffect(() => {
-        console.log(images, ' = images')
-    }, [images])
 
     function onFileSelect(event) {
         const files = event.target.files;
@@ -32,7 +29,7 @@ const ImageUploader = ({images, setImages}) => {
                     ...prevImages,
                     {
                         id: i,
-                        order: images.length + 1,
+                        order: prevImages.length + 1,
                         name: files[i].name,
                         path: URL.createObjectURL(files[i]),
                         file: files[i],
@@ -42,16 +39,11 @@ const ImageUploader = ({images, setImages}) => {
         }
     }
 
-    function deleteImage(index) {
-        setImages((prevImages) =>
-            prevImages.filter((_, i) => i !== index)
-        )
-    }
-
     return (
-        <div>
-            <div className='w-full border-dashed border-2 rounded-lg cursor-pointer text-center flex flex-col items-center py-6'
-                 onClick={selectFiles}
+        <>
+            <div
+                className='w-full border-dashed border-2 rounded-lg cursor-pointer text-center flex flex-col items-center py-6'
+                onClick={selectFiles}
             >
                 <AiOutlineFileImage size={30} className='mb-1'/>
                 <p className='text-gray-900 text-sm font-medium'>
@@ -68,20 +60,21 @@ const ImageUploader = ({images, setImages}) => {
             </div>
 
             <div className='container'>
-                {images.sort(sortImages).map((image, index) => (
-                    <ImageCardTest
-                        key={index}
-                        image={image}
-                        index={index}
-                        deleteImage={deleteImage}
-                        images={images}
-                        setImages={setImages}
-                        currentImage={currentImage}
-                        setCurrentImage={setCurrentImage}
-                    />
-                ))}
+                {
+                    images.map((image, index) => (
+                        <ImageCard
+                            key={index}
+                            image={image}
+                            index={index}
+                            images={images}
+                            setImages={setImages}
+                            dragImage={dragImage}
+                            draggedOverImage={draggedOverImage}
+                        />
+                    ))
+                }
             </div>
-        </div>
+        </>
     );
 };
 

@@ -3,19 +3,19 @@ import {classNames} from "@/utils/classNames";
 import Modal from "@/utils/components/modal";
 import Combobox from "@/utils/components/combobox";
 import {ICategoryResponse} from "@/api/category/types";
-import ImageUploader from "@/components/admin/products/imageUploader";
 import InputField from "@/utils/components/inputField";
 import TextAreaField from "@/utils/components/textAreaField/TextAreaField";
 import axios from "axios";
 import Endpoints from "@/api/endpoints";
 import {IProductResponse} from "@/api/product/types";
 import NameInputField from "@/utils/components/nameInputField/NameInputField";
+import ImageUploader from './imageUploader/index'
 
 export interface IImage {
     file: File,
     id: number,
     name: string,
-    rating: number,
+    order: number,
     url: string
 }
 
@@ -35,6 +35,10 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
     const [images, setImages] = React.useState([])
 
     const [isDisabled, setIsDisabled] = React.useState(true)
+
+    React.useEffect(() => {
+        console.log(images)
+    }, [images])
 
     React.useEffect(() => {
         if (!open) {
@@ -128,8 +132,12 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
                                                     <TextAreaField label={'Описание'} value={about}
                                                                    setValue={setAbout}/>
                                                 </div>
+
                                                 <div className="col-span-full mt-2">
-                                                    <ImageUploader images={images} setImages={setImages}/>
+                                                    <ImageUploader
+                                                        images={images}
+                                                        setImages={setImages}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>

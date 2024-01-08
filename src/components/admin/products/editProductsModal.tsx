@@ -4,10 +4,13 @@ import NameInputField from "@/utils/components/nameInputField/NameInputField";
 import InputField from "@/utils/components/inputField";
 import Combobox from "@/utils/components/combobox";
 import TextAreaField from "@/utils/components/textAreaField/TextAreaField";
-import ImageUploader from "@/components/admin/products/imageUploader";
+import ImageUploader from './imageUploader/index'
 import {IProductResponse} from "@/api/product/types";
 import {ICategoryResponse} from "@/api/category/types";
 import {IImage} from "@/components/admin/products/newProductModal";
+import {equalArrayOfObjects} from "@/utils/equalArrayOfObjects"
+import Endpoints from "@/api/endpoints";
+import axios from "axios";
 
 type EditProductsModalProps = {
     isOpen: boolean,
@@ -35,29 +38,106 @@ const editImages = (images: IImage[]): IImage[] => {
     })
 }
 
+const modifiedImages = (images: any[]) => {
+    const data = {
+        newImages: [],
+        oldImages: []
+    }
+
+    images.forEach((image, idx) => {
+        const keysOfImage = Object.keys(image)
+        if (keysOfImage.includes('file')) {
+            data.newImages.push(image)
+        } else {
+            data.oldImages.push(image)
+        }
+    })
+
+    return  data
+}
+
 const EditProductsModal = ({isOpen, close, product, categories}: EditProductsModalProps) => {
-    console.log(product, 'product edit Modal')
 
-    const {
-        id: productId,
-        name: initialName,
-        price: initialPrice,
-        categoryId: initialCategoryId,
-        about: initialAbout,
-        images: initialImages
-    } = product
-
-    const [name, setName] = React.useState(initialName)
+    const [name, setName] = React.useState('')
     const [isValidName, setIsValidName] = React.useState<boolean | null>(null)
-    const [price, setPrice] = React.useState(initialPrice)
-    const [category, setCategory] = React.useState(findCategory(initialCategoryId, categories))
-    const [about, setAbout] = React.useState(initialAbout)
-    const [images, setImages] = React.useState(editImages(initialImages))
+    const [price, setPrice] = React.useState(0)
+    const [category, setCategory] = React.useState({})
+    const [about, setAbout] = React.useState('')
+    const [images, setImages] = React.useState([])
+    const [initialImages, setInitialImages] = React.useState([])
+
+
+    React.useEffect(() => {
+        if (product) {
+            const { id, name, price, categoryId, about, images } = product;
+            setName(name);
+            setPrice(price);
+            setCategory(findCategory(categoryId, categories));
+            setAbout(about);
+            setImages(editImages(images));
+            setInitialImages(editImages(images))
+        }
+    }, [product]);
+
+    React.useEffect(() => {
+        console.log(images, ' Свежее состояние images')
+    }, [images])
+
+    const editProduct = () => {
+        if (!equalArrayOfObjects(initialImages, images)) {
+            console.log(initialImages, ' initialImages')
+            console.log(images, ' images')
+            console.log('images был изменен')
+            const reqDataImages = modifiedImages(images)
+            console.log(reqDataImages, ' data из reqDataImages')
+
+            const data = new FormData()
+
+            if (reqDataImages.newImages.length !== 0) {
+                const newImages = reqDataImages.newImages
+                newImages.forEach((newImage, idx) => (
+                    data.append(`order=${newImage.order}`, newImage.file)
+                ))
+            }
+
+            if (reqDataImages.oldImages.length !== 0) {
+                const oldImages = reqDataImages.oldImages.map(oldImage => {
+                    return {
+                        'id': oldImage.id,
+                        'name': oldImage.name,
+                        'order': oldImage.order,
+                    }
+                })
+                data.append(`oldImage`, JSON.stringify(oldImages))
+                // oldImages.forEach((oldImage, index) => {
+                //     const oldImageData = {
+                //         'id': oldImage.id,
+                //         'name': oldImage.name,
+                //         'order': oldImage.order,
+                //     }
+                //     data.append(`oldImage ${oldImage.order}`, JSON.stringify(oldImageData))
+                // });
+            }
+
+            axios.patch(`${Endpoints.PUBLIC.PRODUCT}/${product.id}`, data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }).then((res) => {
+                console.log(res.data, 'patch запроc отправлен')
+            }).catch((err) => {
+                console.log(err, 'patch запрос прошел с ошибкой')
+            })
+
+        }  else {
+            console.log('images НЕ был изменен')
+        }
+    }
 
     return (
         <>
             {
-                isOpen &&
+                isOpen && product !== null &&
                 <Modal close={close}>
                     <div className="modal max-w-[70vw] max-h-[80vh] overflow-y-auto rounded-lg">
                         <div
@@ -66,13 +146,14 @@ const EditProductsModal = ({isOpen, close, product, categories}: EditProductsMod
                                 <div className="px-20">
                                     <form action="">
                                         <div className="min-w-[450px]">
-                                            <div className="border-b border-gray-900/10 pb-2">
-                                                <h2 className="text-base font-semibold leading-7 text-gray-900">Создание
-                                                    товара</h2>
+                                            <div className="border-b border-gray-900/10 pb-2 flex flex-row items-center justify-between">
+                                                <h2 className="text-base font-semibold leading-7 text-gray-900">
+                                                    Редактирование товара
+                                                </h2>
+                                                <p className='font-medium'>ID: {product.id}</p>
                                             </div>
 
                                             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12">
-
                                                 <div className="sm:col-span-12">
                                                     <NameInputField
                                                         name={name}
@@ -83,7 +164,8 @@ const EditProductsModal = ({isOpen, close, product, categories}: EditProductsMod
                                                 </div>
 
                                                 <div className="sm:col-span-6">
-                                                    <InputField label={'Цена'} value={String(price)} setValue={setPrice}/>
+                                                    <InputField label={'Цена'} value={String(price)}
+                                                                setValue={setPrice}/>
                                                 </div>
 
                                                 <div className="sm:col-span-6">
@@ -110,6 +192,7 @@ const EditProductsModal = ({isOpen, close, product, categories}: EditProductsMod
                                                         setValue={setAbout}
                                                     />
                                                 </div>
+
                                                 <div className="col-span-full mt-2">
                                                     <ImageUploader images={images} setImages={setImages}/>
                                                 </div>
@@ -128,6 +211,7 @@ const EditProductsModal = ({isOpen, close, product, categories}: EditProductsMod
                                 </button>
                                 <button
                                     type="button"
+                                    onClick={() => editProduct()}
                                     // disabled={isDisabled}
                                     // className={classNames(
                                     //     isDisabled

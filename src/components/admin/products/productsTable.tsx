@@ -35,15 +35,14 @@ const ProductsTable = ({categories, products, changeProduct}: ProductsTableType)
     }
 
     const openEditProduct = (product: IProductResponse) => {
+        console.log(product, ' open edit modal')
         setEditProductModal({ product: product, open: true })
     }
 
     const closeEditProduct = () => {
-        setEditProductModal({ ...editProductModal, open: false })
+        setEditProductModal({ product: null, open: false })
     }
 
-    console.log(products, 'products array')
-    
     return (
         <div className='w-full'>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
