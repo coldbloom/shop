@@ -6,10 +6,13 @@ import ImageCard from "./ImageCard";
 type ImageUploaderProps = {
     images: IImage[],
     setImages: (images: IImage[]) => void,
-    deleteImage: (index: number) => void,
 }
 
-const ImageUploader = ({images, setImages, deleteImage}): ImageUploaderProps => {
+function sortByOrder(images: any) {
+    return images.sort((a: any, b: any) => a.order - b.order);
+}
+
+const ImageUploader = ({images, setImages}): ImageUploaderProps => {
     const fileInputRef = React.useRef(null);
 
     const dragImage = React.useRef<number>(0)
@@ -61,7 +64,7 @@ const ImageUploader = ({images, setImages, deleteImage}): ImageUploaderProps => 
 
             <div className='container'>
                 {
-                    images.map((image, index) => (
+                    sortByOrder(images).map((image, index) => (
                         <ImageCard
                             key={index}
                             image={image}

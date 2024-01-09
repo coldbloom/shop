@@ -108,15 +108,7 @@ const EditProductsModal = ({isOpen, close, product, categories}: EditProductsMod
                         'order': oldImage.order,
                     }
                 })
-                data.append(`oldImage`, JSON.stringify(oldImages))
-                // oldImages.forEach((oldImage, index) => {
-                //     const oldImageData = {
-                //         'id': oldImage.id,
-                //         'name': oldImage.name,
-                //         'order': oldImage.order,
-                //     }
-                //     data.append(`oldImage ${oldImage.order}`, JSON.stringify(oldImageData))
-                // });
+                data.append(`oldImages`, JSON.stringify(oldImages))
             }
 
             axios.patch(`${Endpoints.PUBLIC.PRODUCT}/${product.id}`, data, {

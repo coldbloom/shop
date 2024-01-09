@@ -1,4 +1,4 @@
-interface IImage {
+export interface IImage {
     order: number,
     path: string,
     id: number

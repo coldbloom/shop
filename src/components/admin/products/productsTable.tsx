@@ -1,6 +1,6 @@
 import React from 'react';
 import {MdOutlineDelete, MdOutlineModeEdit} from "react-icons/md";
-import {IProductResponse} from "@/api/product/types";
+import {IImage, IProductResponse} from "@/api/product/types";
 import Image from "next/image";
 import {ICategoryResponse} from "@/api/category/types";
 import axios from "axios";
@@ -12,6 +12,11 @@ const findCategoryName = (categories: ICategoryResponse[], categoryId: number) =
     const category = categories.find(item => item.id === categoryId);
     return category ? category.name : null;
 };
+
+function findTitleImage(images: IImage[]) {
+    const titleImage = images.find(image => image.order === 1)
+    return titleImage?.path
+}
 
 type ProductsTableType = {
     categories: ICategoryResponse[],
@@ -42,6 +47,10 @@ const ProductsTable = ({categories, products, changeProduct}: ProductsTableType)
     const closeEditProduct = () => {
         setEditProductModal({ product: null, open: false })
     }
+
+    React.useEffect(() => {
+        console.log(products, ' from ProductsTable comp')
+    }, [products])
 
     return (
         <div className='w-full'>
@@ -78,7 +87,7 @@ const ProductsTable = ({categories, products, changeProduct}: ProductsTableType)
                             {
                                 product.images.length !== 0
                                 ? <Image
-                                        src={`http://localhost:3031/${product.images[0].path}`}
+                                        src={`http://localhost:3031/${findTitleImage(product.images)}`}
                                         alt="no image"
                                         width={100}
                                         height={100}
