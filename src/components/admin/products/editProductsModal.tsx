@@ -9,8 +9,16 @@ import {IProductResponse} from "@/api/product/types";
 import {ICategoryResponse} from "@/api/category/types";
 import {IImage} from "@/components/admin/products/newProductModal";
 import {equalArrayOfObjects} from "@/utils/equalArrayOfObjects"
+import {sortByOrder} from "@/utils/sortByOrder";
 import Endpoints from "@/api/endpoints";
 import axios from "axios";
+
+interface IInitialField {
+    name: string,
+    price: number,
+    category: ICategoryResponse | {},
+    about: string
+}
 
 type EditProductsModalProps = {
     isOpen: boolean,
@@ -38,6 +46,13 @@ const editImages = (images: IImage[]): IImage[] => {
     })
 }
 
+function isFormDataEmpty(formData: FormData): boolean {
+    for (let pair of formData.entries()) {
+        return false; // Если есть хотя бы один элемент, то объект не является пустым
+    }
+    return true; // Если цикл завершился и нет элементов, то объект FormData пустой
+}
+
 const modifiedImages = (images: any[]) => {
     const data = {
         newImages: [],
@@ -61,11 +76,11 @@ const EditProductsModal = ({isOpen, close, product, categories}: EditProductsMod
     const [name, setName] = React.useState('')
     const [isValidName, setIsValidName] = React.useState<boolean | null>(null)
     const [price, setPrice] = React.useState(0)
-    const [category, setCategory] = React.useState({})
+    const [category, setCategory] = React.useState<ICategoryResponse | null>(null)
     const [about, setAbout] = React.useState('')
     const [images, setImages] = React.useState([])
     const [initialImages, setInitialImages] = React.useState([])
-
+    const [initialFields, setInitialFields] = React.useState<IInitialField | null>(null)
 
     React.useEffect(() => {
         if (product) {
@@ -75,7 +90,13 @@ const EditProductsModal = ({isOpen, close, product, categories}: EditProductsMod
             setCategory(findCategory(categoryId, categories));
             setAbout(about);
             setImages(editImages(images));
-            setInitialImages(editImages(images))
+            setInitialImages(sortByOrder(editImages(images)))
+            setInitialFields({
+                name: name,
+                price: price,
+                category: findCategory(categoryId, categories),
+                about: about
+            })
         }
     }, [product]);
 
@@ -84,14 +105,32 @@ const EditProductsModal = ({isOpen, close, product, categories}: EditProductsMod
     }, [images])
 
     const editProduct = () => {
-        if (!equalArrayOfObjects(initialImages, images)) {
-            console.log(initialImages, ' initialImages')
-            console.log(images, ' images')
-            console.log('images был изменен')
-            const reqDataImages = modifiedImages(images)
-            console.log(reqDataImages, ' data из reqDataImages')
+        const data = new FormData()
 
-            const data = new FormData()
+        if (initialFields !== null) {
+            if (name !== initialFields.name) {
+                console.log(`поле name было изменено`)
+                console.log(` name = ${name}`)
+                console.log(` initialName = ${initialFields.name}`)
+                data.append('name', name)
+            }
+
+            if (price !== initialFields.price) {
+                data.append('price', String(price))
+            }
+
+            if (category !== initialFields.category) {
+                data.append('categoryId', String(category && category.id))
+            }
+
+            if (about !== initialFields.about) {
+                data.append('about', about)
+            }
+        }
+
+        console.log(`Был ли изменен массив images = ${equalArrayOfObjects(initialImages, images)}`)
+        if (!equalArrayOfObjects(initialImages, images)) {
+            const reqDataImages = modifiedImages(images)
 
             if (reqDataImages.newImages.length !== 0) {
                 const newImages = reqDataImages.newImages
@@ -111,6 +150,12 @@ const EditProductsModal = ({isOpen, close, product, categories}: EditProductsMod
                 data.append(`oldImages`, JSON.stringify(oldImages))
             }
 
+        }  else {
+            console.log('images НЕ был изменен')
+        }
+
+        // проверяем пустая ли formData
+        if (!isFormDataEmpty(data)) {
             axios.patch(`${Endpoints.PUBLIC.PRODUCT}/${product.id}`, data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -120,9 +165,6 @@ const EditProductsModal = ({isOpen, close, product, categories}: EditProductsMod
             }).catch((err) => {
                 console.log(err, 'patch запрос прошел с ошибкой')
             })
-
-        }  else {
-            console.log('images НЕ был изменен')
         }
     }
 

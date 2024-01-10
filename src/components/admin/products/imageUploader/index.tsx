@@ -2,14 +2,11 @@ import React from 'react';
 import {IImage} from "@/components/admin/products/newProductModal";
 import {AiOutlineFileImage} from "react-icons/ai";
 import ImageCard from "./ImageCard";
+import {sortByOrder} from "@/utils/sortByOrder"
 
 type ImageUploaderProps = {
     images: IImage[],
     setImages: (images: IImage[]) => void,
-}
-
-function sortByOrder(images: any) {
-    return images.sort((a: any, b: any) => a.order - b.order);
 }
 
 const ImageUploader = ({images, setImages}): ImageUploaderProps => {
