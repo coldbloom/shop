@@ -24,6 +24,8 @@ type EditProductsModalProps = {
     isOpen: boolean,
     close: () => void,
     product: IProductResponse,
+    products: IProductResponse[],
+    setProducts: (products: IProductResponse[]) => void,
     categories: ICategoryResponse[],
 }
 
@@ -71,7 +73,7 @@ const modifiedImages = (images: any[]) => {
     return  data
 }
 
-const EditProductsModal = ({isOpen, close, product, categories}: EditProductsModalProps) => {
+const EditProductsModal = ({isOpen, close, product, products, setProducts, categories}: EditProductsModalProps) => {
 
     const [name, setName] = React.useState('')
     const [isValidName, setIsValidName] = React.useState<boolean | null>(null)
@@ -161,6 +163,18 @@ const EditProductsModal = ({isOpen, close, product, categories}: EditProductsMod
                     'Content-Type': 'multipart/form-data',
                 },
             }).then((res) => {
+                const updatedProduct = res.data;
+                const actualProducts = products.map(product => {
+                    console.log(product.id, ' = product.id', Number(updatedProduct.id), ' = updatedProduct.id')
+                    if (product.id === Number(updatedProduct.id)) {
+                        console.log(product.id, ' id который не изменился')
+                        return updatedProduct
+                    }
+                    return product
+                })
+                console.log(products, 'не актуальный страрый массив продуктов')
+                console.log(actualProducts, 'актуальный измененный массив продуктов')
+                setProducts(actualProducts);
                 console.log(res.data, 'patch запроc отправлен')
             }).catch((err) => {
                 console.log(err, 'patch запрос прошел с ошибкой')

@@ -21,13 +21,14 @@ function findTitleImage(images: IImage[]) {
 type ProductsTableType = {
     categories: ICategoryResponse[],
     products: IProductResponse[],
+    setProducts: (products: IProductResponse[]) => void,
     changeProduct: (array: IProductResponse[]) => void,
 }
 
 interface IDelProductModal {open: boolean, id: number | null}
 interface IEditProductModal {open: boolean, product: IProductResponse | null}
 
-const ProductsTable = ({categories, products, changeProduct}: ProductsTableType) => {
+const ProductsTable = ({categories, products, setProducts, changeProduct}: ProductsTableType) => {
     const [delProductModal, setDelProductModal] = React.useState<IDelProductModal>({ open: false, id: null })
     const [editProductModal, setEditProductModal] = React.useState<IEditProductModal>({ open: false, product: null })
 
@@ -136,7 +137,9 @@ const ProductsTable = ({categories, products, changeProduct}: ProductsTableType)
                 <EditProductsModal
                     isOpen={editProductModal.open}
                     close={closeEditProduct}
+                    products={products}
                     product={editProductModal.product}
+                    setProducts={setProducts}
                     categories={categories}
                 />
             }

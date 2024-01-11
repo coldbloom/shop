@@ -52,6 +52,7 @@ const Products = () => {
             <ProductsTable
                 categories={categories}
                 products={products}
+                setProducts={setProducts}
                 changeProduct={changeProduct}
             />
         </div>
