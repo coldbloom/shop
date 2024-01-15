@@ -8,8 +8,9 @@ type NameInputFieldProps = {
     setName: (newName: string) => void,
     isValidName: null | boolean,
     setIsValidName: (isValidName: null | boolean) => void,
+    initialName: string | null
 }
-const NameInputField = ({name, setName, isValidName, setIsValidName}: NameInputFieldProps) => {
+const NameInputField = ({name, setName, isValidName, setIsValidName, initialName}: NameInputFieldProps) => {
     // Debounce function to delay the execution of the API request
     const debounce = (callback: Function, delay: number) => {
         let timerId: NodeJS.Timeout;
@@ -20,6 +21,7 @@ const NameInputField = ({name, setName, isValidName, setIsValidName}: NameInputF
             }, delay);
         };
     };
+    console.log(initialName, initialName !== name , ' initialName')
 
     const debouncedPostRequest = useCallback(
         debounce((input: string) => {
@@ -49,16 +51,18 @@ const NameInputField = ({name, setName, isValidName, setIsValidName}: NameInputF
             <div className="mt-2">
                 <input
                     type="text"
-                    name="first-name"
-                    id="first-name"
                     value={name}
                     onChange={handleInputChange}
-                    className={classNames(isValidName === false && "ring-red-500 ring-1",
+                    className={classNames(isValidName === false && initialName !== name &&
+                        "ring-red-500 ring-1",
                         "px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     )}
                 />
             </div>
-            {isValidName === false && <p className="text-red-500 mt-2">Имя товара уже существует !</p>}
+            {
+                isValidName === false && initialName !== name &&
+                <p className="text-red-500 mt-2">Имя товара уже существует !</p>
+            }
         </>
     );
 };

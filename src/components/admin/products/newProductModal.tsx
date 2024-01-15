@@ -107,6 +107,7 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
                                                         setName={setName}
                                                         isValidName={isValidName}
                                                         setIsValidName={setIsValidName}
+                                                        initialName={''}
                                                     />
                                                 </div>
 

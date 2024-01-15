@@ -12,6 +12,7 @@ import {equalArrayOfObjects} from "@/utils/equalArrayOfObjects"
 import {sortByOrder} from "@/utils/sortByOrder";
 import Endpoints from "@/api/endpoints";
 import axios from "axios";
+import {classNames} from "@/utils/classNames";
 
 interface IInitialField {
     name: string,
@@ -83,8 +84,13 @@ const EditProductsModal = ({isOpen, close, product, products, setProducts, categ
     const [images, setImages] = React.useState([])
     const [initialImages, setInitialImages] = React.useState([])
     const [initialFields, setInitialFields] = React.useState<IInitialField | null>(null)
+    const [isDirty, setIsDirty] = React.useState(false)
 
-    React.useEffect(() => {
+    const priceChange = (price: string) => {
+        setPrice(Number(price))
+    }
+
+    React.useLayoutEffect(() => {
         if (product) {
             const { id, name, price, categoryId, about, images } = product;
             setName(name);
@@ -103,17 +109,30 @@ const EditProductsModal = ({isOpen, close, product, products, setProducts, categ
     }, [product]);
 
     React.useEffect(() => {
-        console.log(images, ' Свежее состояние images')
-    }, [images])
+        if (initialFields !== null) {
+            if (
+                name === initialFields.name &&
+                price === initialFields.price &&
+                category === initialFields.category &&
+                about === initialFields.about &&
+                equalArrayOfObjects(initialImages, images)
+            ) {
+                setIsDirty(false)
+                console.log('Каждое из полей осталось неизменным')
+                console.log(price)
+            } else {
+                setIsDirty(true)
+                console.log('Хотя бы одно поле было изменено')
+                console.log(price)
+            }
+        }
+    }, [isValidName, name, price, category, about, images])
 
     const editProduct = () => {
         const data = new FormData()
 
         if (initialFields !== null) {
             if (name !== initialFields.name) {
-                console.log(`поле name было изменено`)
-                console.log(` name = ${name}`)
-                console.log(` initialName = ${initialFields.name}`)
                 data.append('name', name)
             }
 
@@ -130,7 +149,6 @@ const EditProductsModal = ({isOpen, close, product, products, setProducts, categ
             }
         }
 
-        console.log(`Был ли изменен массив images = ${equalArrayOfObjects(initialImages, images)}`)
         if (!equalArrayOfObjects(initialImages, images)) {
             const reqDataImages = modifiedImages(images)
 
@@ -165,21 +183,17 @@ const EditProductsModal = ({isOpen, close, product, products, setProducts, categ
             }).then((res) => {
                 const updatedProduct = res.data;
                 const actualProducts = products.map(product => {
-                    console.log(product.id, ' = product.id', Number(updatedProduct.id), ' = updatedProduct.id')
                     if (product.id === Number(updatedProduct.id)) {
-                        console.log(product.id, ' id который не изменился')
                         return updatedProduct
                     }
                     return product
                 })
-                console.log(products, 'не актуальный страрый массив продуктов')
-                console.log(actualProducts, 'актуальный измененный массив продуктов')
                 setProducts(actualProducts);
-                console.log(res.data, 'patch запроc отправлен')
             }).catch((err) => {
                 console.log(err, 'patch запрос прошел с ошибкой')
             })
         }
+        close()
     }
 
     return (
@@ -208,12 +222,13 @@ const EditProductsModal = ({isOpen, close, product, products, setProducts, categ
                                                         setName={setName}
                                                         isValidName={isValidName}
                                                         setIsValidName={setIsValidName}
+                                                        initialName={initialFields ? initialFields.name : null}
                                                     />
                                                 </div>
 
                                                 <div className="sm:col-span-6">
                                                     <InputField label={'Цена'} value={String(price)}
-                                                                setValue={setPrice}/>
+                                                                setValue={priceChange}/>
                                                 </div>
 
                                                 <div className="sm:col-span-6">
@@ -260,13 +275,12 @@ const EditProductsModal = ({isOpen, close, product, products, setProducts, categ
                                 <button
                                     type="button"
                                     onClick={() => editProduct()}
-                                    // disabled={isDisabled}
-                                    // className={classNames(
-                                    //     isDisabled
-                                    //     && 'pointer-events-none opacity-50',
-                                    //     "inline-flex w-full justify-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 sm:ml-3 sm:w-auto"
-                                    // )}
-                                    // onClick={() => addNewProduct()}
+                                    disabled={(isValidName === false) || (isDirty === false)}
+                                    className={classNames(
+                                        ((isValidName === false) || (isDirty === false))
+                                        && 'pointer-events-none opacity-50',
+                                        "inline-flex w-full justify-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 sm:ml-3 sm:w-auto"
+                                    )}
                                 >
                                     Добавить
                                 </button>
