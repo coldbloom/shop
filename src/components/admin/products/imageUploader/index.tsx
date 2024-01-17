@@ -5,12 +5,12 @@ import ImageCard from "./ImageCard";
 import {sortByOrder} from "@/utils/sortByOrder"
 
 type ImageUploaderProps = {
-    images: IImage[],
+    images: IImage[] | [],
     setImages: (images: IImage[]) => void,
 }
 
 const ImageUploader = ({images, setImages}): ImageUploaderProps => {
-    const fileInputRef = React.useRef(null);
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
 
     const dragImage = React.useRef<number>(0)
     const draggedOverImage = React.useRef<number>(0)
@@ -24,8 +24,8 @@ const ImageUploader = ({images, setImages}): ImageUploaderProps => {
         if (files.length === 0) return;
         for (let i = 0; i < files.length; i++) {
             if (files[i].type.split('/')[0] !== 'image') continue;
-            if (!images.some((e) => e.name === files[i].name)) {
-                setImages((prevImages) => [
+            if (!images.some((image: IImage) => image.name === files[i].name)) {
+                setImages((prevImages: IImage[]) => [
                     ...prevImages,
                     {
                         id: i,

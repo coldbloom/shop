@@ -1,11 +1,9 @@
 import {configureStore} from "@reduxjs/toolkit";
-import counterReducer from '../store/features/counter/ counterSlice'
 import authReducer from "../store/features/auth/authSlice";
 import { useDispatch } from 'react-redux'
 
 export const store = configureStore({
     reducer: {
-        counter: counterReducer,
         auth: authReducer
     }
 })

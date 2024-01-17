@@ -4,6 +4,7 @@ import AdminHome from "@/components/admin/home";
 import {useSelector, useDispatch} from "react-redux";
 import {IRootState} from "@/store";
 import { getProfile } from "@/store/features/auth/actionCreators";
+import EmptyLayout from "@/components/layout/components/emptyLayout";
 
 const Admin = () => {
     const dispatch = useDispatch()
@@ -26,4 +27,5 @@ const Admin = () => {
     );
 };
 
+Admin.layout = EmptyLayout;
 export default Admin;

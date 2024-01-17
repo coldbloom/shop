@@ -2,6 +2,8 @@ export interface IImage {
     order: number,
     path: string,
     id: number
+    file?: File,
+    url?: string
 }
 export interface IProductResponse {
     id: number,

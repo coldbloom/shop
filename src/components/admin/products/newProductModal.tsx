@@ -32,7 +32,7 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
     const [price, setPrice] = React.useState('')
     const [category, setCategory] = React.useState<ICategoryResponse | null>(null)
     const [about, setAbout] = React.useState('')
-    const [images, setImages] = React.useState([])
+    const [images, setImages] = React.useState<IImage[] | []>([])
 
     const [isDisabled, setIsDisabled] = React.useState(true)
 

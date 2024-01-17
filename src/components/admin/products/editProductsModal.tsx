@@ -7,7 +7,7 @@ import TextAreaField from "@/utils/components/textAreaField/TextAreaField";
 import ImageUploader from './imageUploader/index'
 import {IProductResponse} from "@/api/product/types";
 import {ICategoryResponse} from "@/api/category/types";
-import {IImage} from "@/components/admin/products/newProductModal";
+import {IImage} from "@/api/product/types";
 import {equalArrayOfObjects} from "@/utils/equalArrayOfObjects"
 import {sortByOrder} from "@/utils/sortByOrder";
 import Endpoints from "@/api/endpoints";
@@ -56,7 +56,7 @@ function isFormDataEmpty(formData: FormData): boolean {
     return true; // Если цикл завершился и нет элементов, то объект FormData пустой
 }
 
-const modifiedImages = (images: any[]) => {
+const modifiedImages = (images: IImage[]) => {
     const data = {
         newImages: [],
         oldImages: []
@@ -79,7 +79,7 @@ const EditProductsModal = ({isOpen, close, product, products, setProducts, categ
     const [name, setName] = React.useState('')
     const [isValidName, setIsValidName] = React.useState<boolean | null>(null)
     const [price, setPrice] = React.useState(0)
-    const [category, setCategory] = React.useState<ICategoryResponse | null>(null)
+    const [category, setCategory] = React.useState<ICategoryResponse | null | undefined>(null)
     const [about, setAbout] = React.useState('')
     const [images, setImages] = React.useState([])
     const [initialImages, setInitialImages] = React.useState([])
@@ -119,11 +119,9 @@ const EditProductsModal = ({isOpen, close, product, products, setProducts, categ
             ) {
                 setIsDirty(false)
                 console.log('Каждое из полей осталось неизменным')
-                console.log(price)
             } else {
                 setIsDirty(true)
                 console.log('Хотя бы одно поле было изменено')
-                console.log(price)
             }
         }
     }, [isValidName, name, price, category, about, images])
