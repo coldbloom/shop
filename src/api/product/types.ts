@@ -2,8 +2,8 @@ export interface IImage {
     order: number,
     path: string,
     id: number
-    file?: File,
-    url?: string
+    file?: File
+    name?: string,
 }
 export interface IProductResponse {
     id: number,
@@ -12,4 +12,11 @@ export interface IProductResponse {
     price: number,
     about: string,
     images: IImage[]
+}
+
+export interface IProductPagination {
+    currentPage: number,
+    totalCount: number,
+    totalPages: number,
+    products: IProductResponse[]
 }

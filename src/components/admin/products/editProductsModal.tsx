@@ -14,10 +14,14 @@ import Endpoints from "@/api/endpoints";
 import axios from "axios";
 import {classNames} from "@/utils/classNames";
 
+interface IReqDataImages {
+    oldImages: IImage[],
+    newImages: IImage[]
+}
 interface IInitialField {
     name: string,
     price: number,
-    category: ICategoryResponse | {},
+    category: ICategoryResponse | undefined,
     about: string
 }
 
@@ -26,7 +30,7 @@ type EditProductsModalProps = {
     close: () => void,
     product: IProductResponse,
     products: IProductResponse[],
-    setProducts: (products: IProductResponse[]) => void,
+    setProducts: React.Dispatch<React.SetStateAction<IProductResponse[]>>,
     categories: ICategoryResponse[],
 }
 
@@ -50,19 +54,22 @@ const editImages = (images: IImage[]): IImage[] => {
 }
 
 function isFormDataEmpty(formData: FormData): boolean {
-    for (let pair of formData.entries()) {
-        return false; // Если есть хотя бы один элемент, то объект не является пустым
-    }
-    return true; // Если цикл завершился и нет элементов, то объект FormData пустой
+    let isEmpty = true;
+
+    formData.forEach((value, key) => {
+        isEmpty = false; // Если есть хотя бы один элемент, то объект не является пустым
+    });
+
+    return isEmpty; // Если цикл завершился и нет элементов, то объект FormData пустой
 }
 
-const modifiedImages = (images: IImage[]) => {
-    const data = {
+const modifiedImages = (images: IImage[]): IReqDataImages => {
+    const data:IReqDataImages = {
         newImages: [],
         oldImages: []
     }
 
-    images.forEach((image, idx) => {
+    images.forEach((image: IImage, idx) => {
         const keysOfImage = Object.keys(image)
         if (keysOfImage.includes('file')) {
             data.newImages.push(image)
@@ -76,37 +83,22 @@ const modifiedImages = (images: IImage[]) => {
 
 const EditProductsModal = ({isOpen, close, product, products, setProducts, categories}: EditProductsModalProps) => {
 
-    const [name, setName] = React.useState('')
+    const { id: initialId, name: initialName, price: initialPrice, categoryId: initialCategoryId, about: initialAbout, images: initialImages2} = product
+
+    const [name, setName] = React.useState(initialName)
     const [isValidName, setIsValidName] = React.useState<boolean | null>(null)
-    const [price, setPrice] = React.useState(0)
-    const [category, setCategory] = React.useState<ICategoryResponse | null | undefined>(null)
-    const [about, setAbout] = React.useState('')
-    const [images, setImages] = React.useState([])
-    const [initialImages, setInitialImages] = React.useState([])
-    const [initialFields, setInitialFields] = React.useState<IInitialField | null>(null)
+    const [price, setPrice] = React.useState(initialPrice)
+    const [category, setCategory] = React.useState<ICategoryResponse | null | undefined>(findCategory(initialCategoryId, categories))
+    const [about, setAbout] = React.useState(initialAbout)
+    const [images, setImages] = React.useState(sortByOrder(editImages(initialImages2)))
+    const [initialImages, setInitialImages] = React.useState(sortByOrder(editImages(initialImages2)))
+    const [initialFields, setInitialFields] = React.useState<IInitialField>({
+        name: name,
+        price: price,
+        category: findCategory(initialCategoryId, categories),
+        about: about
+    })
     const [isDirty, setIsDirty] = React.useState(false)
-
-    const priceChange = (price: string) => {
-        setPrice(Number(price))
-    }
-
-    React.useLayoutEffect(() => {
-        if (product) {
-            const { id, name, price, categoryId, about, images } = product;
-            setName(name);
-            setPrice(price);
-            setCategory(findCategory(categoryId, categories));
-            setAbout(about);
-            setImages(editImages(images));
-            setInitialImages(sortByOrder(editImages(images)))
-            setInitialFields({
-                name: name,
-                price: price,
-                category: findCategory(categoryId, categories),
-                about: about
-            })
-        }
-    }, [product]);
 
     React.useEffect(() => {
         if (initialFields !== null) {
@@ -153,7 +145,7 @@ const EditProductsModal = ({isOpen, close, product, products, setProducts, categ
             if (reqDataImages.newImages.length !== 0) {
                 const newImages = reqDataImages.newImages
                 newImages.forEach((newImage, idx) => (
-                    data.append(`order=${newImage.order}`, newImage.file)
+                    newImage.file && data.append(`order=${newImage.order}`, newImage.file) // проверка newImage.file - существует ли, для ts
                 ))
             }
 
@@ -192,6 +184,10 @@ const EditProductsModal = ({isOpen, close, product, products, setProducts, categ
             })
         }
         close()
+    }
+
+    const priceChange = (price: string) => {
+        setPrice(Number(price))
     }
 
     return (
@@ -273,9 +269,9 @@ const EditProductsModal = ({isOpen, close, product, products, setProducts, categ
                                 <button
                                     type="button"
                                     onClick={() => editProduct()}
-                                    disabled={(isValidName === false) || (isDirty === false)}
+                                    disabled={(isValidName === false) || !isDirty} // isValidName может иметь значение null => !null эквивалентно false
                                     className={classNames(
-                                        ((isValidName === false) || (isDirty === false))
+                                        ((isValidName === false) || !isDirty)
                                         && 'pointer-events-none opacity-50',
                                         "inline-flex w-full justify-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 sm:ml-3 sm:w-auto"
                                     )}

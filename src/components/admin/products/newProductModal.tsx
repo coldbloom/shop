@@ -10,14 +10,7 @@ import Endpoints from "@/api/endpoints";
 import {IProductResponse} from "@/api/product/types";
 import NameInputField from "@/utils/components/nameInputField/NameInputField";
 import ImageUploader from './imageUploader/index'
-
-export interface IImage {
-    file: File,
-    id: number,
-    name: string,
-    order: number,
-    url: string
-}
+import {IImage} from "@/api/product/types";
 
 type NewProductModalProps = {
     open: boolean,
@@ -36,19 +29,20 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
 
     const [isDisabled, setIsDisabled] = React.useState(true)
 
-    React.useEffect(() => {
-        console.log(images)
-    }, [images])
+    // React.useEffect(() => {
+    //     console.log(images)
+    // }, [images])
 
     React.useEffect(() => {
-        if (!open) {
+        return () => {
+            console.log('unMount')
             setName('')
             setPrice('')
             setCategory(null)
             setAbout('')
             setImages([])
         }
-    }, [open])
+    }, [])
 
     React.useEffect(() => {
         if (name !== '' && isValidName !== false && price !== '' && category !== null && about !== '' && images.length !== 0) {
@@ -67,7 +61,8 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
         data.append('about', about)
 
         images.forEach((item: IImage, idx) => {
-            data.append(`order=${idx + 1}`, item.file)
+            if (item.file)
+                data.append(`order=${idx + 1}`, item.file)
         })
 
         axios.post(`${Endpoints.PUBLIC.PRODUCT}`, data, {

@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from "next/image";
 import {MdDeleteOutline} from "react-icons/md";
+import {IImage} from "@/api/product/types"
 
 function textAbbreviation (text: string): string {
     if (text.length > 25) {
@@ -18,10 +19,19 @@ function correctOrderImages(imagesClone: any[]) {
     })
 }
 
+type ImageCardProps = {
+    images: IImage[],
+    setImages: React.Dispatch<React.SetStateAction<IImage[]>>,
+    image: IImage,
+    index: number,
+    dragImage:  React.MutableRefObject<number>,
+    draggedOverImage:  React.MutableRefObject<number>,
+}
 
-const ImageCard = ({image, index, images, setImages, dragImage, draggedOverImage}) => {
+
+const ImageCard = ({image, index, images, setImages, dragImage, draggedOverImage}: ImageCardProps) => {
     function deleteImage(index: number) {
-        setImages((prevImages) =>
+        setImages((prevImages: IImage[]) =>
             prevImages.filter((_, i) => i !== index)
         )
     }
@@ -44,21 +54,25 @@ const ImageCard = ({image, index, images, setImages, dragImage, draggedOverImage
             onDragEnd={handleSort}
             onDragOver={(e) => e.preventDefault()}
         >
-            <Image
-                src={image.path}
-                alt={image.name}
-                width={50}
-                height={50}
-                className='rounded-lg'
-            />
-            <p className='text-ellipsis'>
-                {textAbbreviation(image.name)}
-            </p>
-            <MdDeleteOutline
-                size={22}
-                className='cursor-pointer mr-4'
-                onClick={() => deleteImage(index)}
-            />
+            {image.name && (
+                <>
+                    <Image
+                        src={image.path}
+                        alt={image.name}
+                        width={50}
+                        height={50}
+                        className='rounded-lg'
+                    />
+                    <p className='text-ellipsis'>
+                        {textAbbreviation(image.name)}
+                    </p>
+                    <MdDeleteOutline
+                        size={22}
+                        className='cursor-pointer mr-4'
+                        onClick={() => deleteImage(index)}
+                    />
+                </>
+            )}
         </div>
     );
 };

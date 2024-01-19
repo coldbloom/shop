@@ -2,7 +2,7 @@ import React from 'react';
 import {IoIosAddCircleOutline} from "react-icons/io";
 import ProductsTable from "@/components/admin/products/productsTable";
 import NewProductModal from "@/components/admin/products/newProductModal";
-import {IProductResponse} from "@/api/product/types";
+import {IProductPagination, IProductResponse} from "@/api/product/types";
 import {ICategoryResponse} from "@/api/category/types";
 import axios from "axios";
 import Endpoints from "@/api/endpoints";
@@ -13,8 +13,8 @@ const Products = () => {
 
     React.useEffect(() => {
         axios
-            .get<IProductResponse[]>(Endpoints.PUBLIC.PRODUCT)
-            .then(res => setProducts(res.data))
+            .get<IProductPagination>(Endpoints.PUBLIC.PRODUCT)
+            .then(res => setProducts(res.data.products))
             .catch(err => console.log(err))
         axios
             .get<ICategoryResponse[]>(Endpoints.PUBLIC.CATEGORY)
@@ -42,12 +42,14 @@ const Products = () => {
                 />
             </div>
 
-            <NewProductModal
-                open={newProductModal}
-                close={() => setNewProductModal(false)}
-                categories={categories}
-                addNewProductChange={addNewProduct}
-            />
+            {newProductModal && ( // В этом случае, когда вы вызываете функцию close и устанавливаете состояние newProductModal в false, компонент NewProductModal будет полностью удален из дерева DOM
+                <NewProductModal
+                    open={newProductModal}
+                    close={() => setNewProductModal(false)}
+                    categories={categories}
+                    addNewProductChange={addNewProduct}
+                />
+            )}
 
             <ProductsTable
                 categories={categories}

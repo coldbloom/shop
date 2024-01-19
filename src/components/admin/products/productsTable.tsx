@@ -21,7 +21,7 @@ function findTitleImage(images: IImage[]) {
 type ProductsTableType = {
     categories: ICategoryResponse[],
     products: IProductResponse[],
-    setProducts: (products: IProductResponse[]) => void,
+    setProducts: React.Dispatch<React.SetStateAction<IProductResponse[]>>,
     changeProduct: (array: IProductResponse[]) => void,
 }
 
@@ -49,9 +49,9 @@ const ProductsTable = ({categories, products, setProducts, changeProduct}: Produ
         setEditProductModal({ product: null, open: false })
     }
 
-    React.useEffect(() => {
-        console.log(products, ' from ProductsTable comp')
-    }, [products])
+    // React.useEffect(() => {
+    //     console.log(products, ' from ProductsTable comp')
+    // }, [products])
 
     return (
         <div className='w-full'>

@@ -1,25 +1,26 @@
 import React from 'react';
-import {IImage} from "@/components/admin/products/newProductModal";
+import {IImage} from "@/api/product/types"
 import {AiOutlineFileImage} from "react-icons/ai";
 import ImageCard from "./ImageCard";
 import {sortByOrder} from "@/utils/sortByOrder"
 
 type ImageUploaderProps = {
     images: IImage[] | [],
-    setImages: (images: IImage[]) => void,
+    setImages: React.Dispatch<React.SetStateAction<IImage[]>>,
 }
 
-const ImageUploader = ({images, setImages}): ImageUploaderProps => {
+const ImageUploader = ({images, setImages}: ImageUploaderProps) => {
     const fileInputRef = React.useRef<HTMLInputElement>(null);
 
     const dragImage = React.useRef<number>(0)
     const draggedOverImage = React.useRef<number>(0)
 
     function selectFiles() {
+        // @ts-ignore
         fileInputRef.current.click();
     }
 
-    function onFileSelect(event) {
+    function onFileSelect(event: any) {
         const files = event.target.files;
         if (files.length === 0) return;
         for (let i = 0; i < files.length; i++) {

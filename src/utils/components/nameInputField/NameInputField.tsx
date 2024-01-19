@@ -21,7 +21,6 @@ const NameInputField = ({name, setName, isValidName, setIsValidName, initialName
             }, delay);
         };
     };
-    console.log(initialName, initialName !== name , ' initialName')
 
     const debouncedPostRequest = useCallback(
         debounce((input: string) => {
