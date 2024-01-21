@@ -40,3 +40,21 @@ textarea:focus-visible {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
 }
+
+.headroom {
+    height: 50px;
+    background-color: black;
+    width: 100%;
+}
+
+.headroom-pinned {
+    position: fixed;
+    top: 0!important;
+}
+
+.headroom-scrolled {
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: -112px;
+}
