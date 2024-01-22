@@ -1,11 +1,12 @@
 import React from 'react';
 import {classNames} from "@/utils/classNames";
+import Navbar from "../../../navbar";
 
 interface IScrollData {
     y: number,
     lastY: number
 }
-const TestNav = () => {
+const  Nav = () => {
     const [scrollData, setScrollData] = React.useState<IScrollData>({
         y: 0,
         lastY: 0
@@ -46,16 +47,13 @@ const TestNav = () => {
 
     return (
         <>
-            <div className={classNames(
+            <header className={classNames(
                 !showNav && 'translate-y-[-100%]',
-                // scrollData.y < 100 && 'static',
-                // scrollData.y > 100 && 'fixed',
-                'bg-black w-full h-10 sticky top-0'
+                'bg-[#2d2d2d] w-full h-12 sticky top-0 transition-all z-10 opacity-90'
             )}>
-
-            </div>
+                <Navbar />
+            </header>
         </>
-    );
-};
+    )};
 
-export default TestNav;
+export default Nav;

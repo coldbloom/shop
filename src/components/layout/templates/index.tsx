@@ -1,5 +1,5 @@
 import React from "react"
-import TestNav from './testNav'
+import Nav from './nav/nav'
 
 const Layout: React.FC<{
     children: React.ReactNode
@@ -7,7 +7,7 @@ const Layout: React.FC<{
     return (
         <div>
             {/*<h1>Main Layout</h1>*/}
-            <TestNav />
+            <Nav />
             <main className="relative">{children}</main>
             {/*<Footer />*/}
         </div>
