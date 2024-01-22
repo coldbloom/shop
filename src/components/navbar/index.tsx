@@ -24,9 +24,15 @@ const Navbar = () => {
                     </Link>
                 </div>
                 <div className='flex flex-row'>
-                    <BiSearch size={22} color='white' className='mr-6'/>
-                    <MdFavoriteBorder size={22} color='white' className='mr-6'/>
-                    <RiShoppingBagLine size={22} color='white'/>
+                    <button className='mr-4 p-1'>
+                        <BiSearch size={22} color='white'/>
+                    </button>
+                    <button className='mr-4 p-1'>
+                        <MdFavoriteBorder size={22} color='white'/>
+                    </button>
+                    <button className='p-1'>
+                        <RiShoppingBagLine size={22} color='white'/>
+                    </button>
                 </div>
             </div>
             <MobileWrapper
