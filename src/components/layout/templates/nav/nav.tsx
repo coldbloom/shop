@@ -30,9 +30,7 @@ const  Nav = () => {
     }, [])
 
     React.useEffect(() => {
-        console.log(scrollData)
-
-        if (scrollData.y < 100) {
+        if (scrollData.y < 50) {
             setShowNav(true)
         } else {
             setShowNav(false)
@@ -41,7 +39,7 @@ const  Nav = () => {
         if (scrollData.lastY > scrollData.y) {
             setShowNav(true)
         } else {
-            if (scrollData.y > 100) setShowNav(false)
+            if (scrollData.y > 50) setShowNav(false)
         }
     }, [scrollData])
 
@@ -49,7 +47,7 @@ const  Nav = () => {
         <>
             <header className={classNames(
                 !showNav && 'translate-y-[-100%]',
-                'bg-[#2d2d2d] w-full h-12 sticky top-0 transition-all z-10 opacity-90'
+                'bg-[#2d2d2d] w-full h-12 sticky top-0 transition-all z-10 opacity-90 myTestClass'
             )}>
                 <Navbar />
             </header>
