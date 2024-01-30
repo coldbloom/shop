@@ -18,20 +18,39 @@ type NewProductModalProps = {
     categories: ICategoryResponse[],
     addNewProductChange: (newProduct: IProductResponse) => void
 }
+export interface IGender {
+    id: number,
+    name: string
+}
+
+const genders = [
+    { id: 1, name: 'мужчина' },
+    { id: 2, name: 'женщина' }
+]
 
 const NewProductModal = ({open, close, categories, addNewProductChange}: NewProductModalProps) => {
     const [name, setName] = React.useState('')
     const [isValidName, setIsValidName] = React.useState<boolean | null>(null)
     const [price, setPrice] = React.useState('')
     const [category, setCategory] = React.useState<ICategoryResponse | null>(null)
+    const [gender, setGender] = React.useState<IGender | null>(null)
+    const [brand, setBrand] = React.useState('')
     const [about, setAbout] = React.useState('')
     const [images, setImages] = React.useState<IImage[] | []>([])
 
     const [isDisabled, setIsDisabled] = React.useState(true)
 
-    // React.useEffect(() => {
-    //     console.log(images)
-    // }, [images])
+    const [obj, setObj] = React.useState({
+        name: '',
+        isValidName: null,
+        price: null,
+        category: [],
+        gender: null
+    })
+
+    React.useEffect(() => {
+        console.log(gender)
+    }, [gender])
 
     React.useEffect(() => {
         return () => {
@@ -107,7 +126,7 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
                                                 </div>
 
                                                 <div className="sm:col-span-6">
-                                                    <InputField label={'Цена'} value={price} setValue={setPrice}/>
+                                                    <InputField label={'Пол'} value={price} setValue={setPrice}/>
                                                 </div>
 
                                                 <div className="sm:col-span-6">
@@ -122,6 +141,24 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
                                                             data={categories}
                                                         />
                                                     </div>
+                                                </div>
+
+                                                <div className="sm:col-span-6">
+                                                    <label
+                                                        className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Пол
+                                                    </label>
+                                                    <div className="mt-2">
+                                                        <Combobox
+                                                            value={gender}
+                                                            setValue={setGender}
+                                                            data={genders}
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="sm:col-span-6">
+                                                    <InputField label='Пол' value={''} setValue={setPrice}/>
                                                 </div>
 
                                                 <div className="col-span-full">
