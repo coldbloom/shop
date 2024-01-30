@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, ReactEventHandler} from 'react';
 import {Dialog, Transition} from "@headlessui/react";
 import MobileMenu from "./MobileMenu";
 
@@ -8,8 +8,8 @@ type MobileWrapperProps = {
 }
 
 const MobileWrapper = ({isOpen, close}: MobileWrapperProps) => {
-    const mobileMenuRef = React.useRef(null)
-    const handleOutsideClick = (event) => {
+    const mobileMenuRef = React.useRef<HTMLDivElement>(null)
+    const handleOutsideClick = (event: any) => {
         if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
             close();
         }
@@ -42,10 +42,10 @@ const MobileWrapper = ({isOpen, close}: MobileWrapperProps) => {
 
                 <Transition.Child
                     as={Fragment}
-                    enter="transition ease-in-out duration-500 transform"
+                    enter="transition ease-in-out duration-300 transform"
                     enterFrom="-translate-x-full"
                     enterTo="translate-x-0"
-                    leave="transition ease-in-out duration-500 transform"
+                    leave="transition ease-in-out duration-300 transform"
                     leaveFrom="translate-x-0"
                     leaveTo="-translate-x-full"
                 >

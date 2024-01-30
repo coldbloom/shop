@@ -17,19 +17,24 @@ const MobileMenu = ({close}: MobileMenuProps) => {
             >
                 <MdClose size={36} color='white'/>
             </button>
-            <div className='w-full flex flex-row h-12 border-b items-center'>
-                <button
-                    onClick={() => setGender('Men')}
-                    className={classNames(gender === 'Men' && 'underline', 'w-[100%]')}
-                >
-                    MEN
-                </button>
-                <div className="border-r h-6"></div> {/* Разделительная линия */}
+            <div className='w-full flex flex-row h-12 items-center'>
                 <button
                     onClick={() => setGender('Women')}
-                    className={classNames(gender === 'Women' && 'underline', 'w-[100%]')}
+                    className={classNames(gender === 'Women' && 'text-black border-b-2 border-black',
+                        'font-bold text-[rgba(3,7,18,0.5)] h-full w-full border-b '
+                    )}
                 >
                     WOMEN
+                </button>
+                {/* Разделительная линия */}
+                <div className="border-r h-6"></div>
+                <button
+                    onClick={() => setGender('Men')}
+                    className={classNames(gender === 'Men' && 'text-black border-b-2 border-black',
+                        'font-bold text-[rgba(3,7,18,0.5)] h-full w-full border-b '
+                    )}
+                >
+                    MEN
                 </button>
             </div>
             <h1>Menu</h1>

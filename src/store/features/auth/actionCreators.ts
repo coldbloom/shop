@@ -37,34 +37,34 @@ export const getAccessToken = () =>
     }
 
 export const loginUser = (data: ILoginRequest) =>
-        async (dispatch: Dispatch<any>): Promise<void> => {
-            try {
-                dispatch(loginStart())
+    async (dispatch: Dispatch<any>): Promise<void> => {
+        try {
+            dispatch(loginStart())
 
-                const res = await api.auth.login(data)
+            const res = await api.auth.login(data)
 
-                dispatch(loginSuccess(res.data.accessToken))
-                dispatch(getProfile())
+            dispatch(loginSuccess(res.data.accessToken))
+            dispatch(getProfile())
 
-            } catch (e: any) {
-                console.error(e)
+        } catch (e: any) {
+            console.error(e)
 
-                dispatch(loginFailure(e.message))
-            }
+            dispatch(loginFailure(e.message))
         }
+    }
 
 export const logoutUser = () =>
-        async (dispatch: Dispatch): Promise<void> => {
-            try {
-                await api.auth.logout()
+    async (dispatch: Dispatch): Promise<void> => {
+        try {
+            await api.auth.logout()
 
-                dispatch(logoutSuccess())
+            dispatch(logoutSuccess())
 
-                //history.push('/')
-            } catch (e) {
-                console.error(e)
-            }
+            //history.push('/')
+        } catch (e) {
+            console.error(e)
         }
+    }
 
 export const getProfile = () =>
     async (dispatch: Dispatch<any>): Promise<void> => {

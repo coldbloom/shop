@@ -47,7 +47,7 @@ const  Nav = () => {
         <>
             <header className={classNames(
                 !showNav && 'translate-y-[-100%]',
-                'bg-[#2d2d2d] w-full h-12 sticky top-0 transition-all z-10 opacity-90 myTestClass'
+                'w-full h-12 sticky top-0 transition-all z-10 bg-[rgba(0,0,0,0.85)]'
             )}>
                 <Navbar />
             </header>

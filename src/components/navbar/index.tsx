@@ -13,7 +13,7 @@ const Navbar = () => {
     const [open, setOpenMenu] = React.useState(false)
 
     const [isSearch, setIsSearch] = React.useState(false)
-    const closeSearch = (prev: boolean) =>  setIsSearch(!prev)
+    const closeSearch = () => setIsSearch(false)
 
     const openMenu = () => setOpenMenu(true)
     const closeMenu = () => setOpenMenu(false)

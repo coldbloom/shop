@@ -15,9 +15,15 @@ const FullScreenModal = ({children, close}: FullScreenModalProps) => {
         }
     }, [])
     return (
-        <div className='w-full h-screen bg-white fixed top-0 left-0 backdrop-blur-2xl'>
-            <button onClick={close}>назад</button>
-            <div>
+        // <div className='w-full h-screen bg-white fixed top-0 left-0 bg-[rgba(0, 0, 0, 0.5)] backdrop-blur-sm'>
+        //     <button onClick={close}>назад</button>
+        //     <div>
+        //         {children}
+        //     </div>
+        // </div>
+        <div className='full-screen-modal'>
+            <div className=''>
+                <button onClick={close}>назад</button>
                 {children}
             </div>
         </div>
