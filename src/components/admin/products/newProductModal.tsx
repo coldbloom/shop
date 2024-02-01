@@ -1,16 +1,17 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import {classNames} from "@/utils/classNames";
 import Modal from "@/utils/components/modal";
 import Combobox from "@/utils/components/combobox";
 import {ICategoryResponse} from "@/api/category/types";
-import InputField from "@/utils/components/inputField";
+import InputField from "../../../utils/components/inputFields";
 import TextAreaField from "@/utils/components/textAreaField/TextAreaField";
 import axios from "axios";
 import Endpoints from "@/api/endpoints";
 import {IProductResponse} from "@/api/product/types";
-import NameInputField from "@/utils/components/nameInputField/NameInputField";
+import NameInputField from "@/utils/components/inputFields/nameInputField";
 import ImageUploader from './imageUploader/index'
 import {IImage} from "@/api/product/types";
+import PriceInputField from "@/utils/components/inputFields/priceInputField";
 
 type NewProductModalProps = {
     open: boolean,
@@ -18,19 +19,37 @@ type NewProductModalProps = {
     categories: ICategoryResponse[],
     addNewProductChange: (newProduct: IProductResponse) => void
 }
+
+type TFormData = {
+    name: string,
+    isValidName: boolean | null,
+    price: { value: string, isValid: boolean },
+    category: null | ICategoryResponse,
+    gender: null | IGender,
+    brand: string,
+    about: string,
+}
+
 export interface IGender {
     id: number,
     name: string
 }
 
 const genders = [
+    { id: 0, name: 'женщина' },
     { id: 1, name: 'мужчина' },
-    { id: 2, name: 'женщина' }
 ]
+
+const cutLastSpace = (str: string): string => {
+    if (str.indexOf(' ') > 0) {
+        return str.slice(0, str.indexOf(' '))
+    }
+    return str
+}
 
 const NewProductModal = ({open, close, categories, addNewProductChange}: NewProductModalProps) => {
     const [name, setName] = React.useState('')
-    const [isValidName, setIsValidName] = React.useState<boolean | null>(null)
+    const [isValidName, setIsValidName] = React.useState<boolean>(true)
     const [price, setPrice] = React.useState('')
     const [category, setCategory] = React.useState<ICategoryResponse | null>(null)
     const [gender, setGender] = React.useState<IGender | null>(null)
@@ -40,17 +59,35 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
 
     const [isDisabled, setIsDisabled] = React.useState(true)
 
-    const [obj, setObj] = React.useState({
+    const [formData, setFormData] = React.useState<TFormData>({
         name: '',
-        isValidName: null,
-        price: null,
-        category: [],
-        gender: null
+        isValidName: true,
+        price: { value: '', isValid: true },
+        category: null,
+        gender: null,
+        brand: '',
+        about: ''
     })
+    const handleChangeValue = (value: any, name: string) => {
+        if (name === 'price') {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: { value: cutLastSpace(value), isValid: !!Number(value)}
+            }))
+        } else {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: value
+            }))
+        }
+    }
 
-    React.useEffect(() => {
-        console.log(gender)
-    }, [gender])
+    const handleIsValidName = (value: null | boolean) => {
+        setFormData((prev) => ({
+            ...prev,
+            ['isValidName']: value
+        }))
+    }
 
     React.useEffect(() => {
         return () => {
@@ -64,6 +101,7 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
     }, [])
 
     React.useEffect(() => {
+        console.log(1)
         if (name !== '' && isValidName !== false && price !== '' && category !== null && about !== '' && images.length !== 0) {
             setIsDisabled(false)
         } else {
@@ -71,13 +109,17 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
         }
     }, [name, price, category, about, images, isValidName])
 
+    React.useEffect(() => {
+        console.log(formData)
+    }, [formData])
+
     const addNewProduct = ()=> {
         const data = new FormData()
 
-        data.append('name', name)
-        data.append('price', price)
-        data.append('categoryId', String(category && category.id))
-        data.append('about', about)
+        data.append('name', formData.name)
+        data.append('price', formData.price.value)
+        data.append('categoryId', String(formData.category && formData.category.id))
+        data.append('about', formData.about)
 
         images.forEach((item: IImage, idx) => {
             if (item.file)
@@ -117,30 +159,12 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
 
                                                 <div className="sm:col-span-12">
                                                     <NameInputField
-                                                        name={name}
-                                                        setName={setName}
-                                                        isValidName={isValidName}
-                                                        setIsValidName={setIsValidName}
-                                                        initialName={''}
+                                                        value={formData.name}
+                                                        setName={handleChangeValue}
+                                                        isValidName={formData.isValidName}
+                                                        handleIsValidName={handleIsValidName}
+                                                        name='name'
                                                     />
-                                                </div>
-
-                                                <div className="sm:col-span-6">
-                                                    <InputField label={'Пол'} value={price} setValue={setPrice}/>
-                                                </div>
-
-                                                <div className="sm:col-span-6">
-                                                    <label
-                                                        className="block text-sm font-medium leading-6 text-gray-900">
-                                                        Категория
-                                                    </label>
-                                                    <div className="mt-2">
-                                                        <Combobox
-                                                            value={category}
-                                                            setValue={setCategory}
-                                                            data={categories}
-                                                        />
-                                                    </div>
                                                 </div>
 
                                                 <div className="sm:col-span-6">
@@ -150,20 +174,55 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
                                                     </label>
                                                     <div className="mt-2">
                                                         <Combobox
-                                                            value={gender}
-                                                            setValue={setGender}
+                                                            value={formData.gender}
+                                                            setValue={handleChangeValue}
                                                             data={genders}
+                                                            name='gender'
                                                         />
                                                     </div>
                                                 </div>
 
                                                 <div className="sm:col-span-6">
-                                                    <InputField label='Пол' value={''} setValue={setPrice}/>
+                                                    <label
+                                                        className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Категория
+                                                    </label>
+                                                    <div className="mt-2">
+                                                        <Combobox
+                                                            value={formData.category}
+                                                            setValue={handleChangeValue}
+                                                            data={categories}
+                                                            name='category'
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="sm:col-span-6">
+                                                    <PriceInputField
+                                                        label='Цена'
+                                                        value={formData.price.value}
+                                                        setValue={handleChangeValue}
+                                                        isValidPrice={formData.price.isValid}
+                                                        name='price'
+                                                    />
+                                                </div>
+
+                                                <div className="sm:col-span-6">
+                                                    <InputField
+                                                        label='Брэнд'
+                                                        value={formData.brand}
+                                                        setValue={handleChangeValue}
+                                                        name='brand'
+                                                    />
                                                 </div>
 
                                                 <div className="col-span-full">
-                                                    <TextAreaField label={'Описание'} value={about}
-                                                                   setValue={setAbout}/>
+                                                    <TextAreaField
+                                                        label={'Описание'}
+                                                        value={formData.about}
+                                                        setValue={handleChangeValue}
+                                                        name='about'
+                                                    />
                                                 </div>
 
                                                 <div className="col-span-full mt-2">

@@ -2,13 +2,15 @@ import React from 'react';
 import {ICategoryResponse} from "@/api/category/types";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import {classNames} from "@/utils/classNames";
+import {IGender} from "@/components/admin/products/newProductModal";
 
 type ComboboxProps = {
     data: ICategoryResponse[],
     value: ICategoryResponse | null,
-    setValue: React.Dispatch<React.SetStateAction<any>>,
+    setValue: (value: ICategoryResponse | IGender, name: string) => void,
+    name: string
 }
-const Combobox = ({data, value, setValue}: ComboboxProps) => {
+const Combobox = ({data, value, setValue, name}: ComboboxProps) => {
     const [isOpen, setIsOpen] = React.useState(false)
     const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -47,7 +49,7 @@ const Combobox = ({data, value, setValue}: ComboboxProps) => {
                             <li key={item.id}
                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                 onClick={() => {
-                                    setValue(item)
+                                    setValue(item, name)
                                     setIsOpen(false)
                                 }}
                             >

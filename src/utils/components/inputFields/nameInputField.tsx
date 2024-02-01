@@ -1,32 +1,22 @@
-import React, { useCallback } from 'react';
+import React, {JSX, ChangeEvent, useCallback} from 'react';
 import axios from 'axios';
 import Endpoints from "@/api/endpoints";
 import {classNames} from "@/utils/classNames";
+import {debounce} from "@/utils/debounce";
 
 type NameInputFieldProps = {
-    name: string,
-    setName: (newName: string) => void,
+    value: string,
+    setName: (value: string, name: string) => void,
     isValidName: null | boolean,
-    setIsValidName: (isValidName: null | boolean) => void,
-    initialName: string | null
-}
-const NameInputField = ({name, setName, isValidName, setIsValidName, initialName}: NameInputFieldProps) => {
-    // Debounce function to delay the execution of the API request
-    const debounce = (callback: Function, delay: number) => {
-        let timerId: NodeJS.Timeout;
-        return (...args: any[]) => {
-            clearTimeout(timerId);
-            timerId = setTimeout(() => {
-                callback(...args);
-            }, delay);
-        };
-    };
+    handleIsValidName: (value: boolean) => void
+} & JSX.IntrinsicElements["input"];
+const NameInputField = ({value, setName, isValidName, handleIsValidName, ...rest}: NameInputFieldProps) => {
 
     const debouncedPostRequest = useCallback(
         debounce((input: string) => {
             axios.post(`${Endpoints.PUBLIC.PRODUCT}/check`, { name: input })
                 .then((response) => {
-                    setIsValidName(response.data)
+                    handleIsValidName(response.data)
                 })
                 .catch((error) => {
                     console.log(error, ' input name debounce')
@@ -35,11 +25,11 @@ const NameInputField = ({name, setName, isValidName, setIsValidName, initialName
         []
     );
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = event.target.value;
-        setName(inputValue)
-        setIsValidName(null)
-        debouncedPostRequest(inputValue);
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        setName(value, 'name');
+        debouncedPostRequest(value);
+        handleIsValidName(true);
     };
 
     return (
@@ -50,16 +40,17 @@ const NameInputField = ({name, setName, isValidName, setIsValidName, initialName
             <div className="mt-2">
                 <input
                     type="text"
-                    value={name}
-                    onChange={handleInputChange}
-                    className={classNames(isValidName === false && initialName !== name &&
+                    value={value}
+                    onChange={e => handleInputChange(e)}
+                    className={classNames((isValidName === false && value !== '') &&
                         "ring-red-500 ring-1",
                         "px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     )}
+                    {...rest}
                 />
             </div>
             {
-                isValidName === false && initialName !== name &&
+                (isValidName === false && value !== '') &&
                 <p className="text-red-500 mt-2">Имя товара уже существует !</p>
             }
         </>
