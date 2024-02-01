@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import {classNames} from "@/utils/classNames";
 import Modal from "@/utils/components/modal";
 import Combobox from "@/utils/components/combobox";
@@ -48,17 +48,8 @@ const cutLastSpace = (str: string): string => {
 }
 
 const NewProductModal = ({open, close, categories, addNewProductChange}: NewProductModalProps) => {
-    const [name, setName] = React.useState('')
-    const [isValidName, setIsValidName] = React.useState<boolean>(true)
-    const [price, setPrice] = React.useState('')
-    const [category, setCategory] = React.useState<ICategoryResponse | null>(null)
-    const [gender, setGender] = React.useState<IGender | null>(null)
-    const [brand, setBrand] = React.useState('')
-    const [about, setAbout] = React.useState('')
+
     const [images, setImages] = React.useState<IImage[] | []>([])
-
-    const [isDisabled, setIsDisabled] = React.useState(true)
-
     const [formData, setFormData] = React.useState<TFormData>({
         name: '',
         isValidName: true,
@@ -89,29 +80,9 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
         }))
     }
 
-    React.useEffect(() => {
-        return () => {
-            console.log('unMount')
-            setName('')
-            setPrice('')
-            setCategory(null)
-            setAbout('')
-            setImages([])
-        }
-    }, [])
-
-    React.useEffect(() => {
-        console.log(1)
-        if (name !== '' && isValidName !== false && price !== '' && category !== null && about !== '' && images.length !== 0) {
-            setIsDisabled(false)
-        } else {
-            setIsDisabled(true)
-        }
-    }, [name, price, category, about, images, isValidName])
-
-    React.useEffect(() => {
-        console.log(formData)
-    }, [formData])
+    const isDisabledButton = () => {
+        return !(formData.name !== '' && formData.isValidName !== false && formData.price.value !== '' && formData.category !== null && formData.about !== '' && images.length !== 0);
+    }
 
     const addNewProduct = ()=> {
         const data = new FormData()
@@ -209,7 +180,7 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
 
                                                 <div className="sm:col-span-6">
                                                     <InputField
-                                                        label='Брэнд'
+                                                        label='Бренд'
                                                         value={formData.brand}
                                                         setValue={handleChangeValue}
                                                         name='brand'
@@ -246,9 +217,9 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
                                 </button>
                                 <button
                                     type="button"
-                                    disabled={isDisabled}
+                                    disabled={isDisabledButton()}
                                     className={classNames(
-                                        isDisabled
+                                        isDisabledButton()
                                         && 'pointer-events-none opacity-50',
                                         "inline-flex w-full justify-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 sm:ml-3 sm:w-auto"
                                     )}

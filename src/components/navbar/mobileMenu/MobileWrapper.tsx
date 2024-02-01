@@ -1,4 +1,4 @@
-import React, {Fragment, ReactEventHandler} from 'react';
+import React, {Fragment} from 'react';
 import {Dialog, Transition} from "@headlessui/react";
 import MobileMenu from "./MobileMenu";
 
