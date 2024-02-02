@@ -36,7 +36,7 @@ const AdminHome = () => {
                 setNav={setNav}
             />
 
-            <div className='flex flex-col w-full'>
+            <div className='flex flex-col w-[calc(100%-250px)]'>
                 <Header />
 
                 <main>

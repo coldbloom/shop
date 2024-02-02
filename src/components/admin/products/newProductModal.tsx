@@ -1,17 +1,16 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {classNames} from "@/utils/classNames";
 import Modal from "@/utils/components/modal";
 import Combobox from "@/utils/components/combobox";
 import {ICategoryResponse} from "@/api/category/types";
-import InputField from "../../../utils/components/inputFields";
+import InputField from "../../../utils/components/inputField";
 import TextAreaField from "@/utils/components/textAreaField/TextAreaField";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import Endpoints from "@/api/endpoints";
 import {IProductResponse} from "@/api/product/types";
-import NameInputField from "@/utils/components/inputFields/nameInputField";
 import ImageUploader from './imageUploader/index'
 import {IImage} from "@/api/product/types";
-import PriceInputField from "@/utils/components/inputFields/priceInputField";
+import {debounce} from "@/utils/debounce";
 
 type NewProductModalProps = {
     open: boolean,
@@ -21,9 +20,8 @@ type NewProductModalProps = {
 }
 
 type TFormData = {
-    name: string,
-    isValidName: boolean | null,
-    price: { value: string, isValid: boolean },
+    name: { value: string, isValid: boolean },
+    price: string,
     category: null | ICategoryResponse,
     gender: null | IGender,
     brand: string,
@@ -40,6 +38,8 @@ const genders = [
     { id: 1, name: 'мужчина' },
 ]
 
+const isNumber = /^\d*$/;
+
 const cutLastSpace = (str: string): string => {
     if (str.indexOf(' ') > 0) {
         return str.slice(0, str.indexOf(' '))
@@ -51,44 +51,62 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
 
     const [images, setImages] = React.useState<IImage[] | []>([])
     const [formData, setFormData] = React.useState<TFormData>({
-        name: '',
-        isValidName: true,
-        price: { value: '', isValid: true },
+        name: { value: '', isValid: true },
+        price: '',
         category: null,
         gender: null,
         brand: '',
         about: ''
     })
+
+    const debouncedPostRequest = useCallback(
+        debounce((input: string) => {
+            axios.post(`${Endpoints.PUBLIC.PRODUCT}/check`, { name: input })
+                .then((response: AxiosResponse) => {
+                    setFormData((prev) => ({
+                        ...prev,
+                        ['name']: {
+                            ...prev['name'],
+                            'isValid': response.data
+                        }
+                    }))
+                })
+                .catch((error) => {
+                    console.log(error, ' input name debounce')
+                });
+        }, 500), // Specify the delay (in milliseconds) for debouncing
+        []
+    );
+
+
     const handleChangeValue = (value: any, name: string) => {
-        if (name === 'price') {
+        if (name === 'name') {
             setFormData((prev) => ({
                 ...prev,
-                [name]: { value: cutLastSpace(value), isValid: !!Number(value)}
-            }))
+                [name]: {
+                    ...prev['name'],
+                    'value': value
+                }
+            }));
+            debouncedPostRequest(value);
         } else {
+            console.log('all other')
             setFormData((prev) => ({
                 ...prev,
                 [name]: value
-            }))
+            }));
         }
     }
 
-    const handleIsValidName = (value: null | boolean) => {
-        setFormData((prev) => ({
-            ...prev,
-            ['isValidName']: value
-        }))
-    }
-
     const isDisabledButton = () => {
-        return !(formData.name !== '' && formData.isValidName !== false && formData.price.value !== '' && formData.category !== null && formData.about !== '' && images.length !== 0);
+        return !(formData.name.value !== '' && formData.name.isValid !== false && formData.price !== '' && formData.category !== null && formData.about !== '' && images.length !== 0);
     }
 
     const addNewProduct = ()=> {
         const data = new FormData()
 
-        data.append('name', formData.name)
-        data.append('price', formData.price.value)
+        data.append('name', formData.name.value)
+        data.append('price', formData.price)
         data.append('categoryId', String(formData.category && formData.category.id))
         data.append('about', formData.about)
 
@@ -110,6 +128,10 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
         })
     }
 
+    React.useEffect(() => {
+        console.log(formData)
+    }, [formData])
+
     return (
         <>
             {
@@ -129,12 +151,13 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
                                             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12">
 
                                                 <div className="sm:col-span-12">
-                                                    <NameInputField
-                                                        value={formData.name}
-                                                        setName={handleChangeValue}
-                                                        isValidName={formData.isValidName}
-                                                        handleIsValidName={handleIsValidName}
+                                                    <InputField
+                                                        label='Наименование'
+                                                        value={formData.name.value}
+                                                        setValue={handleChangeValue}
+                                                        isValid={formData.name.isValid}
                                                         name='name'
+                                                        errorString='Имя товара уже существует !'
                                                     />
                                                 </div>
 
@@ -169,12 +192,12 @@ const NewProductModal = ({open, close, categories, addNewProductChange}: NewProd
                                                 </div>
 
                                                 <div className="sm:col-span-6">
-                                                    <PriceInputField
+                                                    <InputField
                                                         label='Цена'
-                                                        value={formData.price.value}
+                                                        value={formData.price}
                                                         setValue={handleChangeValue}
-                                                        isValidPrice={formData.price.isValid}
                                                         name='price'
+                                                        type={'number'}
                                                     />
                                                 </div>
 
