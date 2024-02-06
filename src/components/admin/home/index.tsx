@@ -4,7 +4,7 @@ import Products from "@/components/admin/products";
 import Categories from "@/components/admin/categories";
 import Sidebar from "@/components/admin/home/sidebar";
 import Header from "@/components/admin/home/header";
-import NewProduct from "@/components/admin/products/newProduct";
+import Index from "@/components/admin/products/newProduct";
 import NewCategory from "@/components/admin/categories/newCategory";
 
 export interface INavigation {
@@ -38,7 +38,7 @@ const AdminHome = () => {
                 <main>
                     {
                         {
-                            1: <NewProduct />,
+                            1: <Index />,
                             2: <Products />,
                             3: <NewCategory />,
                             4: <Categories />,

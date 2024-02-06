@@ -5,7 +5,7 @@ import {classNames} from "@/utils/classNames";
 type TAccordionProps = {
     title: string,
     id: number,
-    accordion: number | null,
+    accordion: number,
     handleOpen: (id: number) => void,
     children: React.ReactNode // добавляем children в тип TAccordionProps
 }

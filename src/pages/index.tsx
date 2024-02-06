@@ -1,12 +1,14 @@
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import {useAppSelector} from './../hooks/redux'
+import {useSelector} from "react-redux";
 
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+
   return (
-      <main
+      <div // *main
           className={`flex min-h-screen flex-col items-center justify-between px-12 w-full ${inter.className}`}
       >
         <h1 className='bg-amber-400'>Main</h1>
@@ -34,6 +36,6 @@ export default function Home() {
           начинается с новой строки и занимает всю доступную ширину. Следующие один за другим абзацы разделяются между
           собой отбивкой, величину которой можно задавать при помощи CSS свойства margin. Для перевода строки внутри
           абзаца используется тег</p>
-      </main>
+      </div>
   )
 }

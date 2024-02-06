@@ -11,11 +11,11 @@ type TSidebarProps = {
 }
 
 const Sidebar = ({currentNav, setNav}: TSidebarProps) => {
-    const [accordion, setAccordion] = React.useState<number | null>(0)
+    const [accordion, setAccordion] = React.useState<number>(0)
 
     const handleAccordion = (id: number) => {
         if (accordion === id) {
-            setAccordion(null)
+            setAccordion(0)
         } else {
             setAccordion(id)
         }

@@ -10,7 +10,7 @@ type Gender = 'Men' | 'Women'
 const MobileMenu = ({close}: MobileMenuProps) => {
     const [gender, setGender] = React.useState<Gender>('Men')
     return (
-        <div className='relative'>
+        <nav className='relative'>
             <button
                 className='fixed w-12 h-12 bg-[#2d2d2d] opacity-100 top-0 left-[75vw] flex items-center justify-center'
                 onClick={close}
@@ -38,7 +38,7 @@ const MobileMenu = ({close}: MobileMenuProps) => {
                 </button>
             </div>
             <h1>Menu</h1>
-        </div>
+        </nav>
     );
 };
 
