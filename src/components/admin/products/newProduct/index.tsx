@@ -1,25 +1,20 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import DropDownWrapper from "@/components/admin/products/newProduct/dropDownWrapper";
 import Info from './info'
+import Sizes from "./sizes";
 import {ICategoryResponse} from "@/api/category/types";
-import {IGender, TFormData} from "./productTypes";
-
-type TFormData = {
-    name: { value: string, isValid: boolean },
-    price: string,
-    category: null | ICategoryResponse,
-    gender: null | IGender,
-    brand: string,
-    about: string,
-}
+import {IGender, TFormData, IDropDown} from "./productTypes";
+import {debounce} from "@/utils/debounce";
+import axios, {AxiosResponse} from "axios";
+import Endpoints from "@/api/endpoints";
 
 const NewProduct = () => {
-    const [dropDown, setDropDown] = React.useState({
+    const [dropDown, setDropDown] = React.useState<IDropDown>({
         info: false,
         sizes: false,
         media: false,
     })
-    const handleDropDownToggle = (dropDown) => {
+    const handleDropDownToggle = (dropDown: string) => {
         setDropDown(prevState => ({
             ...prevState,
             [dropDown]: !prevState[dropDown]
@@ -27,13 +22,32 @@ const NewProduct = () => {
     }
 
     const [formData, setFormData] = React.useState<TFormData>({
-        name: { value: '', isValid: true },
+        name: {value: '', isValid: true},
         price: '',
         category: null,
         gender: null,
         brand: '',
         about: ''
     })
+
+    const debouncedPostRequest = useCallback(
+        debounce((input: string) => {
+            axios.post(`${Endpoints.PUBLIC.PRODUCT}/check`, { name: input })
+                .then((response: AxiosResponse) => {
+                    setFormData((prev) => ({
+                        ...prev,
+                        ['name']: {
+                            ...prev['name'],
+                            'isValid': response.data
+                        }
+                    }))
+                })
+                .catch((error) => {
+                    console.log(error, ' input name debounce')
+                });
+        }, 500), // Specify the delay (in milliseconds) for debouncing
+        []
+    );
 
     const handleChangeValue = (value: any, name: string) => {
         if (name === 'name') {
@@ -54,10 +68,8 @@ const NewProduct = () => {
         }
     }
 
-
-
     return (
-        <div className='w-full h-full flex flex-col items-center justify-center pt-12 px-32'>
+        <div className='w-full h-full flex flex-col items-center justify-center pt-12 lg:px-[100px] xl:px-[150px] 2xl:px-[300px] px-[20px]'>
             <DropDownWrapper
                 title='Основная информация'
                 open={dropDown['info']}
@@ -74,7 +86,10 @@ const NewProduct = () => {
                 open={dropDown['sizes']}
                 setOpen={() => handleDropDownToggle('sizes')}
             >
-                <p>Доступные размеры контент</p>
+                <Sizes
+                    formData={formData}
+                    handleChangeValue={handleChangeValue}
+                />
             </DropDownWrapper>
 
             <DropDownWrapper
@@ -86,7 +101,8 @@ const NewProduct = () => {
             </DropDownWrapper>
 
             <div className='w-full flex justify-end'>
-                <button className='bg-indigo-600 text-white font-medium px-4 py-2 rounded-lg'>Опубликовать товар</button>
+                <button className='bg-indigo-600 text-white font-medium px-4 py-2 rounded-lg'>Опубликовать товар
+                </button>
             </div>
         </div>
     );

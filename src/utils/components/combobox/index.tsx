@@ -32,9 +32,9 @@ const Combobox = ({data, value, setValue, name}: ComboboxProps) => {
     }, []);
 
     return (
-        <div ref={containerRef} className='relative'>
+        <div ref={containerRef} className='relative mt-2 w-full'>
             <div className={classNames(isOpen && 'ring-2 ring-inset ring-indigo-600',
-                "p-2 flex flex-row justify-between items-center w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6")}
+                "p-2 flex flex-row justify-between items-center w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6")}
                  onClick={() => setIsOpen(!isOpen)}
             >
                 <p className="">
@@ -43,7 +43,7 @@ const Combobox = ({data, value, setValue, name}: ComboboxProps) => {
                 <MdKeyboardArrowDown className='ml-2' size={20}/>
             </div>
             {isOpen && (
-                <div className="absolute w-full shadow-xl mt-2 bg-white divide-y divide-gray-100 rounded-lg dark:bg-gray-700">
+                <div className="absolute w-full shadow-xl mt-2 bg-white divide-y divide-gray-100 rounded-lg dark:bg-gray-700 z-20">
                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
                         {data.map(item => (
                             <li key={item.id}

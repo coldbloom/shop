@@ -5,9 +5,10 @@ import {classNames} from "@/utils/classNames";
 type DropDownWrapperProps = {
     title: string,
     open: boolean,
-    setOpen: React.Dispatch<SetStateAction<number>>
+    setOpen: () => void,
+    children: React.ReactNode
 }
-const DropDownWrapper = ({title, open, setOpen, children}): DropDownWrapperProps => {
+const DropDownWrapper: React.FC<DropDownWrapperProps> = ({title, open, setOpen, children}) => {
     const ref = React.useRef<HTMLDivElement | null>(null)
     return (
         <>
@@ -18,7 +19,7 @@ const DropDownWrapper = ({title, open, setOpen, children}): DropDownWrapperProps
                 </h3>
                 <PlusMinusToggleButton open={open} setOpen={setOpen}/>
             </div>
-            <div ref={ref} className={classNames(open && 'h-auto', 'h-0 overflow-hidden transition-all duration-300')}
+            <div ref={ref} className={classNames(open && 'h-auto', 'h-0 overflow-hidden transition-all duration-300 w-full')}
                  style={open ? {height: ref.current?.scrollHeight} : {height: '0px'}}>
                 {children}
             </div>

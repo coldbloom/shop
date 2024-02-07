@@ -18,3 +18,9 @@ export type TFormData = {
     brand: string,
     about: string,
 }
+
+export interface IDropDown {
+    [key: string]: boolean,
+}
+
+export interface ISize {size: number | string, available: boolean}

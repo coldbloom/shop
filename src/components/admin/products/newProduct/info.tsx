@@ -3,13 +3,24 @@ import InputField from "@/utils/components/inputField";
 import Combobox from "@/utils/components/combobox";
 import TextAreaField from "@/utils/components/textAreaField/TextAreaField";
 import {TFormData, genders} from "./productTypes";
+import {useAppSelector} from "@/hooks/redux";
+import {fetchCategories} from '@/store/reducers/ActionCreators'
+import {useAppDispatch, AppDispatch} from '@/store'
 
 type TInfoProps = {
     formData: TFormData
+    handleChangeValue: (value: any, name: string) => void
 }
-const Info = ({formData, handleChangeValue}): TInfoProps => {
+const Info: React.FC<TInfoProps> = ({formData, handleChangeValue}) => {
+    const dispatch = useAppDispatch()
+    const {categories} = useAppSelector(state => state.categoryReducer)
+
+    React.useEffect(() => {
+        dispatch(fetchCategories())
+    }, [])
+
     return (
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12">
+        <div className="w-full mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12 border border-amber-700">
 
             <div className="sm:col-span-12">
                 <InputField
@@ -24,17 +35,15 @@ const Info = ({formData, handleChangeValue}): TInfoProps => {
 
             <div className="sm:col-span-6">
                 <label
-                    className="block text-sm font-medium leading-6 text-gray-900">
+                    className="block text-sm font-medium leading-6 text-gray-9000">
                     Пол
                 </label>
-                <div className="mt-2">
-                    <Combobox
-                        value={formData.gender}
-                        setValue={handleChangeValue}
-                        data={genders}
-                        name='gender'
-                    />
-                </div>
+                <Combobox
+                    value={formData.gender}
+                    setValue={handleChangeValue}
+                    data={genders}
+                    name='gender'
+                />
             </div>
 
             <div className="sm:col-span-6">
@@ -42,14 +51,12 @@ const Info = ({formData, handleChangeValue}): TInfoProps => {
                     className="block text-sm font-medium leading-6 text-gray-900">
                     Категория
                 </label>
-                <div className="mt-2">
-                    <Combobox
-                        value={formData.category}
-                        setValue={handleChangeValue}
-                        data={categories}
-                        name='category'
-                    />
-                </div>
+                <Combobox
+                    value={formData.category}
+                    setValue={handleChangeValue}
+                    data={categories}
+                    name='category'
+                />
             </div>
 
             <div className="sm:col-span-6">
