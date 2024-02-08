@@ -23,4 +23,4 @@ export interface IDropDown {
     [key: string]: boolean,
 }
 
-export interface ISize {size: number | string, available: boolean}
+export interface ISize {size: string, available: boolean}

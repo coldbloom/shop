@@ -7,6 +7,8 @@ import {IGender, TFormData, IDropDown} from "./productTypes";
 import {debounce} from "@/utils/debounce";
 import axios, {AxiosResponse} from "axios";
 import Endpoints from "@/api/endpoints";
+import ImageUploader from "@/components/admin/products/imageUploader";
+import {IImage} from "@/api/product/types";
 
 const NewProduct = () => {
     const [dropDown, setDropDown] = React.useState<IDropDown>({
@@ -29,6 +31,7 @@ const NewProduct = () => {
         brand: '',
         about: ''
     })
+    const [images, setImages] = React.useState<IImage[] | []>([])
 
     const debouncedPostRequest = useCallback(
         debounce((input: string) => {
@@ -69,7 +72,7 @@ const NewProduct = () => {
     }
 
     return (
-        <div className='w-full h-full flex flex-col items-center justify-center pt-12 lg:px-[100px] xl:px-[150px] 2xl:px-[300px] px-[20px]'>
+        <div className='w-full h-full flex flex-col items-center justify-center pt-12 lg:px-[120px] xl:px-[180px] 2xl:px-[300px] px-[20px]'>
             <DropDownWrapper
                 title='Основная информация'
                 open={dropDown['info']}
@@ -97,10 +100,15 @@ const NewProduct = () => {
                 open={dropDown['media']}
                 setOpen={() => handleDropDownToggle('media')}
             >
-                <p>Медиа контент</p>
+                <div className='pt-5 pb-10'>
+                    <ImageUploader
+                        images={images}
+                        setImages={setImages}
+                    />
+                </div>
             </DropDownWrapper>
 
-            <div className='w-full flex justify-end'>
+            <div className='w-full flex justify-end pb-16'>
                 <button className='bg-indigo-600 text-white font-medium px-4 py-2 rounded-lg'>Опубликовать товар
                 </button>
             </div>

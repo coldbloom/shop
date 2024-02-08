@@ -20,7 +20,7 @@ const Info: React.FC<TInfoProps> = ({formData, handleChangeValue}) => {
     }, [])
 
     return (
-        <div className="w-full mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12 border border-amber-700">
+        <div className="w-full grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12 pt-5 pb-10">
 
             <div className="sm:col-span-12">
                 <InputField

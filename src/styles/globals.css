@@ -102,4 +102,9 @@ textarea:focus-visible {
     z-index: 101; /* Убедитесь, что контент модального окна находится выше размытого фона */
 }
 
+.dropDown {
+    /*-webkit-transition: max-height 1s;*/
+    transition: max-height .5s, padding 0.1s;
+}
+
 

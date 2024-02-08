@@ -73,6 +73,33 @@ const Sidebar = ({currentNav, setNav}: TSidebarProps) => {
                         />
                     </>
                 </Accordion>
+                <Accordion
+                    title={'Дополнительно'}
+                    id={3}
+                    accordion={accordion}
+                    handleOpen={handleAccordion}
+                >
+                    <>
+                        <NavButton
+                            id={6}
+                            currentNav={currentNav}
+                            setNav={setNav}
+                            title='Типы'
+                        />
+                        <NavButton
+                            id={7}
+                            currentNav={currentNav}
+                            setNav={setNav}
+                            title='Бренды'
+                        />
+                        <NavButton
+                            id={8}
+                            currentNav={currentNav}
+                            setNav={setNav}
+                            title='Размеры'
+                        />
+                    </>
+                </Accordion>
 
                 <li className='py-1'>
                     <button onClick={() => {

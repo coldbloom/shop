@@ -19,8 +19,8 @@ const DropDownWrapper: React.FC<DropDownWrapperProps> = ({title, open, setOpen, 
                 </h3>
                 <PlusMinusToggleButton open={open} setOpen={setOpen}/>
             </div>
-            <div ref={ref} className={classNames(open && 'h-auto', 'h-0 overflow-hidden transition-all duration-300 w-full')}
-                 style={open ? {height: ref.current?.scrollHeight} : {height: '0px'}}>
+            <div ref={ref} className={classNames(open && 'h-auto max-h-[999px]', 'overflow-hidden w-full dropDown max-h-0')}
+            >
                 {children}
             </div>
             <hr className='my-6 w-full'/>
