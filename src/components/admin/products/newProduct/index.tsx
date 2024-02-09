@@ -63,7 +63,6 @@ const NewProduct = () => {
             }));
             debouncedPostRequest(value);
         } else {
-            console.log('all other')
             setFormData((prev) => ({
                 ...prev,
                 [name]: value

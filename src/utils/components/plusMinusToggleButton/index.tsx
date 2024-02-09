@@ -4,13 +4,10 @@ import {classNames} from "@/utils/classNames";
 
 type PlusMinusToggleButtonProps = {
     open: boolean,
-    setOpen: React.Dispatch<SetStateAction<boolean>>
 }
-const PlusMinusToggleButton = ({open, setOpen}: PlusMinusToggleButtonProps) => {
+const PlusMinusToggleButton = ({open}: PlusMinusToggleButtonProps) => {
     return (
-        <button onClick={() => setOpen(prev => !prev)}
-                className={classNames(open && `${s.opened}`, `${s.circlePlus} ${s.closed}`)}
-        >
+        <button className={classNames(open && `${s.opened}`, `${s.circlePlus} ${s.closed}`)}>
             <div className={`${s.circle}`}>
                 <div className={`${s.horizontal}`}></div>
                 <div className={`${s.vertical}`}></div>

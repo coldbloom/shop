@@ -7,8 +7,9 @@ type TNavButtonProps = {
     currentNav: number,
     setNav: (id: number) => void,
     title: string
+    isImageArrow?: boolean
 }
-const NavButton = ({id, currentNav, setNav, title}: TNavButtonProps) => {
+const NavButton = ({id, currentNav, setNav, title, isImageArrow}: TNavButtonProps) => {
     return (
         <button onClick={() => setNav(id)}
                 className={classNames(
@@ -18,8 +19,8 @@ const NavButton = ({id, currentNav, setNav, title}: TNavButtonProps) => {
                     'rounded-md px-3 py-2 font-medium my-2 w-full flex flex-row items-center'
                 )}
         >
-            <IoIosArrowForward/>
-            <p className='pl-2'>{title}</p>
+            {isImageArrow && <IoIosArrowForward/>}
+            <p className={classNames(!isImageArrow && 'pl-2')}>{title}</p>
         </button>
     );
 };

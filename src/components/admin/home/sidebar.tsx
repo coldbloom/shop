@@ -20,6 +20,11 @@ const Sidebar = ({currentNav, setNav}: TSidebarProps) => {
             setAccordion(id)
         }
     }
+
+    React.useEffect(() => {
+        console.log(`Текущий nav: ${currentNav}`)
+        console.log(`Текущий акордион: ${accordion}`)
+    }, [accordion, currentNav])
     return (
         <div className='w-[250px] h-screen bg-indigo-600 p-4 pt-6 fixed'>
             <div className="flex flex-row pb-6">
@@ -52,27 +57,27 @@ const Sidebar = ({currentNav, setNav}: TSidebarProps) => {
                         />
                     </>
                 </Accordion>
-                <Accordion
-                    title={'Категории'}
-                    id={2}
-                    accordion={accordion}
-                    handleOpen={handleAccordion}
-                >
-                    <>
-                        <NavButton
-                            id={3}
-                            currentNav={currentNav}
-                            setNav={setNav}
-                            title='Создать категорию'
-                        />
-                        <NavButton
-                            id={4}
-                            currentNav={currentNav}
-                            setNav={setNav}
-                            title='Все категории'
-                        />
-                    </>
-                </Accordion>
+                {/*<Accordion*/}
+                {/*    title={'Категории'}*/}
+                {/*    id={2}*/}
+                {/*    accordion={accordion}*/}
+                {/*    handleOpen={handleAccordion}*/}
+                {/*>*/}
+                {/*    <>*/}
+                {/*        <NavButton*/}
+                {/*            id={3}*/}
+                {/*            currentNav={currentNav}*/}
+                {/*            setNav={setNav}*/}
+                {/*            title='Создать категорию'*/}
+                {/*        />*/}
+                {/*        <NavButton*/}
+                {/*            id={4}*/}
+                {/*            currentNav={currentNav}*/}
+                {/*            setNav={setNav}*/}
+                {/*            title='Все категории'*/}
+                {/*        />*/}
+                {/*    </>*/}
+                {/*</Accordion>*/}
                 <Accordion
                     title={'Дополнительно'}
                     id={3}
@@ -98,20 +103,26 @@ const Sidebar = ({currentNav, setNav}: TSidebarProps) => {
                             setNav={setNav}
                             title='Размеры'
                         />
+                        <NavButton
+                            id={4}
+                            currentNav={currentNav}
+                            setNav={setNav}
+                            title={'Категории'}
+                        />
                     </>
                 </Accordion>
 
                 <li className='py-1'>
-                    <button onClick={() => {
-                        setAccordion(3)
-                        setNav(5)
-                    }}
-                        className={classNames(
-                        accordion === 3
-                            ? 'bg-indigo-700 text-white'
-                            : 'text-gray-300 hover:bg-indigo-700 hover:text-white',
-                        'rounded-md px-3 py-2 font-medium my-2 first:my-0 w-full flex flex-row justify-between items-center')}
-                    >Заказы</button>
+                    <NavButton
+                        id={5}
+                        currentNav={currentNav}
+                        setNav={() => {
+                            setNav(5);
+                            handleAccordion(0);}
+                        }
+                        title='Заказы'
+                        isImageArrow={false}
+                    />
                 </li>
             </ul>
         </div>

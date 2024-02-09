@@ -6,7 +6,10 @@ import Sidebar from "@/components/admin/home/sidebar";
 import Header from "@/components/admin/home/header";
 import Index from "@/components/admin/products/newProduct";
 import NewCategory from "@/components/admin/categories/newCategory";
-
+import Sizes from '@/components/admin/additionaly/sizes'
+import Brands from '@/components/admin/additionaly/brands'
+import Types from "@/components/admin/additionaly/types";
+import Orders from "@/components/admin/orders";
 export interface INavigation {
     id: number,
     name: string
@@ -15,9 +18,10 @@ export interface INavigation {
 // все товарыы = 2
 // создать категорию = 3
 // все категории = 4
-// типы = 5
-// бренды = 6
-// размеры = 7
+// типы = 6
+// бренды = 7
+// размеры = 8
+// Заказы - 5
 
 
 const AdminHome = () => {
@@ -43,8 +47,15 @@ const AdminHome = () => {
                         {
                             1: <Index />,
                             2: <Products />,
+
                             3: <NewCategory />,
                             4: <Categories />,
+
+                            5: <Orders />,
+
+                            6: <Types />,
+                            7: <Brands />,
+                            8: <Sizes />
                         }[currentNav]
                     }
                 </main>
