@@ -2,7 +2,7 @@ import React from 'react';
 import Combobox from "@/utils/components/combobox";
 import {genders, TFormData, ISize} from "@/components/admin/products/newProduct/productTypes";
 import {useAppDispatch} from "@/store";
-import {useAppSelector} from "@/hooks/redux";
+import {useAppSelector} from "@/utils/hooks/redux";
 import {fetchCategories} from "@/store/reducers/ActionCreators";
 import {log} from "node:util";
 import {classNames} from "@/utils/classNames";

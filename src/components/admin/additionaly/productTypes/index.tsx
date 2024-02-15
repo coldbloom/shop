@@ -4,7 +4,7 @@ import NewCategoryModal from "@/components/admin/categories/newCategoryModal";
 import CategoryTable from "@/components/admin/categories/categoryTable";
 import {ICategoryResponse} from "@/api/category/types";
 
-const Types = () => {
+const ProductTypes = () => {
     const [openModal, setOpenModal] = React.useState<boolean>(false)
     const [brands, setBrands] = React.useState<ICategoryResponse[]>([])
 
@@ -26,7 +26,7 @@ const Types = () => {
             {/*<NewCategoryModal*/}
             {/*    open={openModal}*/}
             {/*    close={closeOpenModal}*/}
-            {/*    brands={brands}*/}
+            {/*    productBrands={productBrands}*/}
             {/*    mutateCategories={mutateCategories}*/}
             {/*/>*/}
 
@@ -38,4 +38,4 @@ const Types = () => {
     );
 };
 
-export default Types;
+export default ProductTypes;

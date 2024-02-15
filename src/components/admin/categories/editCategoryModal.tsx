@@ -11,7 +11,7 @@ type EditCategoryModal = {
     id: number | null,
     name: string,
     categories: ICategoryResponse[],
-    mutateCategories: (updatedCategories: ICategoryResponse[]) => void
+    setCategories: React.Dispatch<React.SetStateAction<ICategoryResponse[]>>
 }
 
 const mutation = (array: ICategoryResponse[], id: number | null, newName: string) => {
@@ -23,7 +23,7 @@ const mutation = (array: ICategoryResponse[], id: number | null, newName: string
         return category
     })
 }
-const EditCategoryModal = ({open, close, id, name, categories, mutateCategories}: EditCategoryModal) => {
+const EditCategoryModal = ({open, close, id, name, categories, setCategories}: EditCategoryModal) => {
     const [value, setValue] = React.useState('')
 
     React.useEffect(() => {
@@ -35,7 +35,7 @@ const EditCategoryModal = ({open, close, id, name, categories, mutateCategories}
             .put(`${Endpoints.PUBLIC.CATEGORY}/${id}`, { 'newName': value})
             .then((res) => {
                 const updatedCategories = mutation(categories, id, value)
-                mutateCategories(updatedCategories)
+                setCategories(updatedCategories)
                 setValue('')
                 close()
             })

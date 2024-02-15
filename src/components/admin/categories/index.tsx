@@ -13,9 +13,9 @@ const Categories = () => {
     const [openModal, setOpenModal] = React.useState<boolean>(false)
     const [categories, setCategories] = React.useState<ICategoryResponse[]>([])
 
-    const mutateCategories = (categories: ICategoryResponse[]) => {
-        setCategories(categories)
-    }
+    // const mutateCategories = (categories: ICategoryResponse[]) => {
+    //     setCategories(categories)
+    // }
 
     React.useEffect(() => {
         axios
@@ -26,6 +26,10 @@ const Categories = () => {
     const closeOpenModal = () => {
         setOpenModal(false)
     }
+
+    React.useEffect(() => {
+        console.log(categories)
+    }, [categories])
 
     return (
         <div className='p-4 relative'>
@@ -42,12 +46,12 @@ const Categories = () => {
                 open={openModal}
                 close={closeOpenModal}
                 categories={categories}
-                mutateCategories={mutateCategories}
+                setCategories={setCategories}
             />
 
             <CategoryTable
                 categories={categories ? categories : []}
-                mutateCategories={mutateCategories}
+                setCategories={setCategories}
             />
         </div>
     );

@@ -1,7 +1,7 @@
 import {AppDispatch} from "@/store";
 import axios from "axios";
 import Endpoints from "@/api/endpoints";
-import {ICategory} from "@/models/ICategory";
+import {ICategory} from "@/types/ICategory";
 import {categorySlice} from "./CategorySlice";
 
 export const fetchCategories = () => async (dispatch: AppDispatch) => {

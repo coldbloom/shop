@@ -8,13 +8,13 @@ import DeleteCategoryModal from "@/components/admin/categories/deleteCategoryMod
 
 type CategoryTableProps = {
     categories: ICategoryResponse[] | [],
-    mutateCategories: (updatedCategories: ICategoryResponse[]) => void
+    setCategories: React.Dispatch<React.SetStateAction<ICategoryResponse[]>>
 }
 
 interface IEditModal {open: boolean, id: number | null, newName: string}
 interface IDelModal {open: boolean, id: number | null }
 
-const CategoryTable = ({categories, mutateCategories}: CategoryTableProps) => {
+const CategoryTable = ({categories, setCategories}: CategoryTableProps) => {
     const [editModal, setEditModal] = React.useState<IEditModal>({ open: false, newName: '', id: null})
     const [delModal, setDelModal] = React.useState<IDelModal>({ open: false, id: null })
 
@@ -88,14 +88,14 @@ const CategoryTable = ({categories, mutateCategories}: CategoryTableProps) => {
                 id={editModal.id}
                 name={editModal.newName}
                 categories={categories}
-                mutateCategories={mutateCategories}
+                setCategories={setCategories}
             />
             <DeleteCategoryModal
                 id={delModal.id}
                 open={delModal.open}
                 close={closeDelModal}
                 categories={categories}
-                mutateCategories={mutateCategories}
+                setCategories={setCategories}
             />
         </div>
     );

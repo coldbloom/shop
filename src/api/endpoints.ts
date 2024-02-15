@@ -8,7 +8,8 @@ const Endpoints ={
     PUBLIC:{
         CATEGORY: `${process.env.NEXT_PUBLIC_SERVER_URL}/category`,
         PRODUCT: `${process.env.NEXT_PUBLIC_SERVER_URL}/product`
-    }
+    },
+    BRAND: `${process.env.NEXT_PUBLIC_SERVER_URL}/brand`,
 }
 
 export default Endpoints

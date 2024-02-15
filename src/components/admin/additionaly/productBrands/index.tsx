@@ -1,12 +1,11 @@
 import React from 'react';
 import {IoIosAddCircleOutline} from "react-icons/io";
-import NewCategoryModal from "@/components/admin/categories/newCategoryModal";
-import CategoryTable from "@/components/admin/categories/categoryTable";
-import {ICategoryResponse} from "@/api/category/types";
+import {IBrands} from "@/types/IBrands"
+import NewBrandsModal from "@/components/admin/additionaly/productBrands/newBrandsModal";
 
-const Sizes = () => {
+const ProductBrands = () => {
     const [openModal, setOpenModal] = React.useState<boolean>(false)
-    const [sizes, setSizes] = React.useState<ICategoryResponse[]>([])
+    const [brands, setBrands] = React.useState<IBrands[] | []>([])
 
     const closeOpenModal = () => {
         setOpenModal(false)
@@ -15,7 +14,7 @@ const Sizes = () => {
     return (
         <div className='p-4 relative'>
             <div className='flex flex-row justify-between pb-4 pl-6'>
-                <h1 className='text-2xl font-semibold'>Размеры</h1>
+                <h1 className='text-2xl font-semibold'>Бренды</h1>
                 <IoIosAddCircleOutline
                     size={32}
                     className='cursor-pointer'
@@ -23,12 +22,12 @@ const Sizes = () => {
                 />
             </div>
 
-            {/*<NewCategoryModal*/}
-            {/*    open={openModal}*/}
-            {/*    close={closeOpenModal}*/}
-            {/*    sizes={sizes}*/}
-            {/*    mutateCategories={mutateCategories}*/}
-            {/*/>*/}
+            <NewBrandsModal
+                open={openModal}
+                close={closeOpenModal}
+                brands={brands}
+                setBrands={setBrands}
+            />
 
             {/*<CategoryTable*/}
             {/*    categories={categories ? categories : []}*/}
@@ -38,4 +37,4 @@ const Sizes = () => {
     );
 };
 
-export default Sizes;
+export default ProductBrands;

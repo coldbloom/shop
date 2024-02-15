@@ -9,15 +9,15 @@ type DeleteCategoryModalProps = {
     open: boolean,
     close: () => void,
     categories: ICategoryResponse[],
-    mutateCategories: (updatedCategories: ICategoryResponse[]) => void
+    setCategories: React.Dispatch<React.SetStateAction<ICategoryResponse[]>>
 }
-const DeleteCategoryModal = ({id, open, close, categories, mutateCategories}: DeleteCategoryModalProps) => {
+const DeleteCategoryModal = ({id, open, close, categories, setCategories}: DeleteCategoryModalProps) => {
 
     const delCategories = () => {
         axiosInstance
             .delete(`${Endpoints.PUBLIC.CATEGORY}/${id}`)
             .then(() => {
-                mutateCategories(categories.filter(item => item.id !== id))
+                setCategories(categories.filter(item => item.id !== id))
                 close()
             })
     }

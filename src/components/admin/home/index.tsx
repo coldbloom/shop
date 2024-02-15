@@ -6,9 +6,9 @@ import Sidebar from "@/components/admin/home/sidebar";
 import Header from "@/components/admin/home/header";
 import Index from "@/components/admin/products/newProduct";
 import NewCategory from "@/components/admin/categories/newCategory";
-import Sizes from '@/components/admin/additionaly/sizes'
-import Brands from '@/components/admin/additionaly/brands'
-import Types from "@/components/admin/additionaly/types";
+import Sizes from '../additionaly/productSizes'
+import Brands from '../additionaly/productBrands'
+import Types from "../additionaly/productTypes";
 import Orders from "@/components/admin/orders";
 export interface INavigation {
     id: number,

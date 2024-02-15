@@ -1,26 +1,19 @@
 import React from 'react';
-import {classNames} from "@/utils/classNames";
-import {ICategoryResponse} from "@/api/category/types";
+import {IBrands} from "@/types/IBrands";
 import Modal from "@/utils/components/modal";
-import {axiosInstance} from "@/api/instance";
-import Endpoints from "@/api/endpoints";
+import {classNames} from "@/utils/classNames";
 
-type NewCategoryModalProps = {
+type NewBrandModalProps = {
     open: boolean;
     close: () => void;
-    setCategories: React.Dispatch<React.SetStateAction<ICategoryResponse[]>>
+    setBrands: React.Dispatch<React.SetStateAction<IBrands[]>>;
 };
 
-const NewCategoryModal = ({open, close, setCategories}: NewCategoryModalProps) => {
+const NewBrandModal = ({open, close, setBrands}: NewBrandModalProps) => {
     const [name, setName] = React.useState('')
-    const addNewCategoryFetch = () => {
-        axiosInstance
-            .post(Endpoints.PUBLIC.CATEGORY, {'name': name})
-            .then(res => {
-                setCategories(prev => [...prev, res.data])
-                close()
-                setName('')
-            })
+
+    const addNewBrandModal = () => {
+
     };
 
     return (
@@ -34,7 +27,7 @@ const NewCategoryModal = ({open, close, setCategories}: NewCategoryModalProps) =
 
                                 <div className="mt-3 text-center sm:mt-0 sm:text-left">
                                     <h3 className="text-base font-semibold leading-6 text-gray-900 pb-4">
-                                        Добавить новую категорию
+                                        Добавить новый бренд
                                     </h3>
                                     <div className="mt-2">
                                         <input
@@ -64,7 +57,7 @@ const NewCategoryModal = ({open, close, setCategories}: NewCategoryModalProps) =
                                         && 'pointer-events-none opacity-50',
                                         "inline-flex w-full justify-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 sm:ml-3 sm:w-auto"
                                     )}
-                                    onClick={() => addNewCategoryFetch()}
+                                    onClick={() => addNewBrandModal()}
                                 >
                                     Добавить
                                 </button>
@@ -77,4 +70,4 @@ const NewCategoryModal = ({open, close, setCategories}: NewCategoryModalProps) =
     );
 };
 
-export default NewCategoryModal;
+export default NewBrandModal;

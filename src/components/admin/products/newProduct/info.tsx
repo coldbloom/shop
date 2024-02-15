@@ -3,7 +3,7 @@ import InputField from "@/utils/components/inputField";
 import Combobox from "@/utils/components/combobox";
 import TextAreaField from "@/utils/components/textAreaField/TextAreaField";
 import {TFormData, genders} from "./productTypes";
-import {useAppSelector} from "@/hooks/redux";
+import {useAppSelector} from "@/utils/hooks/redux";
 import {fetchCategories} from '@/store/reducers/ActionCreators'
 import {useAppDispatch, AppDispatch} from '@/store'
 

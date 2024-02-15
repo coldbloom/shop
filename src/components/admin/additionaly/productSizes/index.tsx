@@ -4,9 +4,9 @@ import NewCategoryModal from "@/components/admin/categories/newCategoryModal";
 import CategoryTable from "@/components/admin/categories/categoryTable";
 import {ICategoryResponse} from "@/api/category/types";
 
-const Brands = () => {
+const ProductSizes = () => {
     const [openModal, setOpenModal] = React.useState<boolean>(false)
-    const [brands, setBrands] = React.useState<ICategoryResponse[]>([])
+    const [sizes, setSizes] = React.useState<ICategoryResponse[]>([])
 
     const closeOpenModal = () => {
         setOpenModal(false)
@@ -15,7 +15,7 @@ const Brands = () => {
     return (
         <div className='p-4 relative'>
             <div className='flex flex-row justify-between pb-4 pl-6'>
-                <h1 className='text-2xl font-semibold'>Бренды</h1>
+                <h1 className='text-2xl font-semibold'>Размеры</h1>
                 <IoIosAddCircleOutline
                     size={32}
                     className='cursor-pointer'
@@ -26,7 +26,7 @@ const Brands = () => {
             {/*<NewCategoryModal*/}
             {/*    open={openModal}*/}
             {/*    close={closeOpenModal}*/}
-            {/*    brands={brands}*/}
+            {/*    productSizes={productSizes}*/}
             {/*    mutateCategories={mutateCategories}*/}
             {/*/>*/}
 
@@ -38,4 +38,4 @@ const Brands = () => {
     );
 };
 
-export default Brands;
+export default ProductSizes;
