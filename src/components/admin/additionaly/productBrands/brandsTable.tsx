@@ -1,20 +1,20 @@
 import React from 'react';
-import {ICategoryResponse} from "@/api/category/types"
-
-import { MdOutlineDelete } from "react-icons/md";
-import { MdOutlineModeEdit } from "react-icons/md";
+import {IBrand} from "@/types/IBrand";
+import {MdOutlineDelete, MdOutlineModeEdit} from "react-icons/md";
 import EditCategoryModal from "@/components/admin/categories/editCategoryModal";
 import DeleteCategoryModal from "@/components/admin/categories/deleteCategoryModal";
+import {ICategoryResponse} from "@/api/category/types";
+import DeleteBrandsModal from "@/components/admin/additionaly/productBrands/deleteBrandsModal";
+import EditBrandsModal from "@/components/admin/additionaly/productBrands/editBrandsModal";
 
-type CategoryTableProps = {
-    categories: ICategoryResponse[] | [],
-    setCategories: React.Dispatch<React.SetStateAction<ICategoryResponse[]>>
+type BrandsTableProps = {
+    brands: IBrand[],
+    setBrands: React.Dispatch<React.SetStateAction<IBrand[]>>
 }
 
 interface IEditModal {open: boolean, id: number | null, newName: string}
 interface IDelModal {open: boolean, id: number | null }
-
-const CategoryTable = ({categories, setCategories}: CategoryTableProps) => {
+const BrandsTable = ({brands, setBrands}: BrandsTableProps) => {
     const [editModal, setEditModal] = React.useState<IEditModal>({ open: false, newName: '', id: null})
     const [delModal, setDelModal] = React.useState<IDelModal>({ open: false, id: null })
 
@@ -38,10 +38,12 @@ const CategoryTable = ({categories, setCategories}: CategoryTableProps) => {
         })
     }
 
+
     return (
         <div className="w-full">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="w-full text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead
+                    className="w-full text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr className='w-full'>
                     <th scope="col" className="px-6 py-3 text-center">
                         ID
@@ -55,12 +57,14 @@ const CategoryTable = ({categories, setCategories}: CategoryTableProps) => {
                 </tr>
                 </thead>
                 <tbody>
-                {categories && categories.map((item, idx) => (
+                {brands && brands.map((item, idx) => (
                     <tr key={idx} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex justify-center text-center">
+                        <th scope="row"
+                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex justify-center text-center">
                             {item.id}
                         </th>
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                        <th scope="row"
+                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                             {item.name}
                         </th>
                         <td className="px-6 py-4 flex flex-row justify-center">
@@ -81,23 +85,22 @@ const CategoryTable = ({categories, setCategories}: CategoryTableProps) => {
             </table>
 
             { editModal.open &&
-                <EditCategoryModal
-                    close={closeEditModal}
+                <EditBrandsModal
                     id={editModal.id}
+                    close={closeEditModal}
+                    setBrands={setBrands}
                     name={editModal.newName}
-                    categories={categories}
-                    setCategories={setCategories}
                 />
             }
             { delModal.open &&
-                <DeleteCategoryModal
+                <DeleteBrandsModal
                     id={delModal.id}
                     close={closeDelModal}
-                    setCategories={setCategories}
+                    setBrands={setBrands}
                 />
             }
         </div>
     );
 };
 
-export default CategoryTable;
+export default BrandsTable;

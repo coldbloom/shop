@@ -6,7 +6,7 @@ import {ICategoryResponse} from "@/api/category/types";
 
 const ProductTypes = () => {
     const [openModal, setOpenModal] = React.useState<boolean>(false)
-    const [brands, setBrands] = React.useState<ICategoryResponse[]>([])
+    const [types, setTypes] = React.useState<ICategoryResponse[]>([])
 
     const closeOpenModal = () => {
         setOpenModal(false)

@@ -1,22 +1,22 @@
 import React from 'react';
 import Modal from "@/utils/components/modal";
-import {ICategoryResponse} from "@/api/category/types";
 import {axiosInstance} from "@/api/instance";
 import Endpoints from "@/api/endpoints";
 import DeleteModal from "@/utils/components/editionalModal/deleteModal";
+import {IBrand} from "@/types/IBrand";
 
-type DeleteCategoryModalProps = {
+type TDeleteBrandsModalProps = {
     id: number | null,
     close: () => void,
-    setCategories: React.Dispatch<React.SetStateAction<ICategoryResponse[]>>
+    setBrands: React.Dispatch<React.SetStateAction<IBrand[]>>
 }
-const DeleteCategoryModal = ({id , close, setCategories}: DeleteCategoryModalProps) => {
+const DeleteBrandsModal = ({id , close, setBrands}: TDeleteBrandsModalProps) => {
 
     const delCategories = () => {
         axiosInstance
-            .delete(`${Endpoints.PUBLIC.CATEGORY}/${id}`)
+            .delete(`${Endpoints.BRAND}/${id}`)
             .then(() => {
-                setCategories(prev => prev.filter(item => item.id !== id))
+                setBrands(prev => prev.filter(item => item.id !== id))
                 close()
             })
     }
@@ -25,10 +25,10 @@ const DeleteCategoryModal = ({id , close, setCategories}: DeleteCategoryModalPro
             <DeleteModal
                 handleDelFetch={delCategories}
                 close={close}
-                title='Вы действительно желаете удалить данную категорию?'
+                title='Вы действительно желаете удалить данный бренд?'
             />
         </Modal>
     );
 };
 
-export default DeleteCategoryModal;
+export default DeleteBrandsModal;

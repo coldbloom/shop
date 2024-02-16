@@ -10,12 +10,8 @@ import axios from "axios";
 
 
 const Categories = () => {
-    const [openModal, setOpenModal] = React.useState<boolean>(false)
+    const [openNewCategoriesModal, setOpenModal] = React.useState<boolean>(false)
     const [categories, setCategories] = React.useState<ICategoryResponse[]>([])
-
-    // const mutateCategories = (categories: ICategoryResponse[]) => {
-    //     setCategories(categories)
-    // }
 
     React.useEffect(() => {
         axios
@@ -23,13 +19,7 @@ const Categories = () => {
             .then(res => setCategories(res.data))
     }, [])
 
-    const closeOpenModal = () => {
-        setOpenModal(false)
-    }
-
-    React.useEffect(() => {
-        console.log(categories)
-    }, [categories])
+    const closeOpenModal = () => setOpenModal(false)
 
     return (
         <div className='p-4 relative'>
@@ -42,12 +32,12 @@ const Categories = () => {
                 />
             </div>
 
-            <NewCategoryModal
-                open={openModal}
-                close={closeOpenModal}
-                categories={categories}
-                setCategories={setCategories}
-            />
+            { openNewCategoriesModal &&
+                <NewCategoryModal
+                    close={closeOpenModal}
+                    setCategories={setCategories}
+                />
+            }
 
             <CategoryTable
                 categories={categories ? categories : []}

@@ -57,27 +57,7 @@ const Sidebar = ({currentNav, setNav}: TSidebarProps) => {
                         />
                     </>
                 </Accordion>
-                {/*<Accordion*/}
-                {/*    title={'Категории'}*/}
-                {/*    id={2}*/}
-                {/*    accordion={accordion}*/}
-                {/*    handleOpen={handleAccordion}*/}
-                {/*>*/}
-                {/*    <>*/}
-                {/*        <NavButton*/}
-                {/*            id={3}*/}
-                {/*            currentNav={currentNav}*/}
-                {/*            setNav={setNav}*/}
-                {/*            title='Создать категорию'*/}
-                {/*        />*/}
-                {/*        <NavButton*/}
-                {/*            id={4}*/}
-                {/*            currentNav={currentNav}*/}
-                {/*            setNav={setNav}*/}
-                {/*            title='Все категории'*/}
-                {/*        />*/}
-                {/*    </>*/}
-                {/*</Accordion>*/}
+
                 <Accordion
                     title={'Дополнительно'}
                     id={3}
@@ -86,25 +66,25 @@ const Sidebar = ({currentNav, setNav}: TSidebarProps) => {
                 >
                     <>
                         <NavButton
-                            id={6}
+                            id={3}
                             currentNav={currentNav}
                             setNav={setNav}
                             title='Типы'
                         />
                         <NavButton
-                            id={7}
+                            id={4}
                             currentNav={currentNav}
                             setNav={setNav}
                             title='Бренды'
                         />
                         <NavButton
-                            id={8}
+                            id={5}
                             currentNav={currentNav}
                             setNav={setNav}
                             title='Размеры'
                         />
                         <NavButton
-                            id={4}
+                            id={6}
                             currentNav={currentNav}
                             setNav={setNav}
                             title={'Категории'}
@@ -114,10 +94,10 @@ const Sidebar = ({currentNav, setNav}: TSidebarProps) => {
 
                 <li className='py-1'>
                     <NavButton
-                        id={5}
+                        id={7}
                         currentNav={currentNav}
                         setNav={() => {
-                            setNav(5);
+                            setNav(7);
                             handleAccordion(0);}
                         }
                         title='Заказы'
