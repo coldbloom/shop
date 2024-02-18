@@ -4,13 +4,14 @@ import {hasWhiteSpaceAtBeginEnd} from "@/utils/hasWhiteSpaceAtBeginEnd";
 
 type TEditModalProps = {
     title: string,
+    close: () => void,
     name: string,
     value: string,
     setValue: React.Dispatch<React.SetStateAction<string>>
     handleEditFetch: () => void
 }
 
-const EditModal = ({title, name, value, setValue, handleEditFetch}: TEditModalProps) => {
+const EditModal = ({title, close, name, value, setValue, handleEditFetch}: TEditModalProps) => {
 
     return (
         <div className="flex min-h-full items-end justify-center p-6 text-center sm:items-center sm:p-0">

@@ -10,6 +10,7 @@ const Endpoints ={
         PRODUCT: `${process.env.NEXT_PUBLIC_SERVER_URL}/product`
     },
     BRAND: `${process.env.NEXT_PUBLIC_SERVER_URL}/brand`,
+    PRODUCT_TYPE: `${process.env.NEXT_PUBLIC_SERVER_URL}/productType`
 }
 
 export default Endpoints

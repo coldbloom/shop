@@ -1,30 +1,30 @@
 import React from 'react';
 import Modal from "@/utils/components/modal";
-import {ICategoryResponse} from "@/api/category/types";
 import {axiosInstance} from "@/api/instance";
 import Endpoints from "@/api/endpoints";
 import EditModal from "@/utils/components/editionalModal/editModal";
+import {IProductType} from "@/types/IProductType";
 
 
-type EditCategoryModal = {
-    close: () => void,
+type TEditProductTypeModalProps = {
     id: number | null,
+    close: () => void,
     name: string,
-    setCategories: React.Dispatch<React.SetStateAction<ICategoryResponse[]>>
+    setProductTypes: React.Dispatch<React.SetStateAction<IProductType[]>>
 }
 
-const EditCategoryModal = ({close, id, name, setCategories}: EditCategoryModal) => {
+const EditProductTypeModal = ({id, close, name, setProductTypes}: TEditProductTypeModalProps) => {
     const [value, setValue] = React.useState(name)
 
     const editCategoryName = () => {
         axiosInstance
             .put(`${Endpoints.PUBLIC.CATEGORY}/${id}`, {'newName': value})
-            .then(() => {
-                setCategories(prev => prev.map(category => {
-                    if (category.id === id) {
-                        return {...category, name: value}
+            .then((res) => {
+                setProductTypes(prev => prev.map(type => {
+                    if (type.id === id) {
+                        return { ...type, name: value}
                     }
-                    return {...category}
+                    return {...type}
                 }));
                 close();
             })
@@ -33,7 +33,7 @@ const EditCategoryModal = ({close, id, name, setCategories}: EditCategoryModal) 
     return (
         <Modal close={close}>
             <EditModal
-                title='Изменить наименование категории'
+                title='Изменить наименование типа товара'
                 close={close}
                 name={name}
                 value={value}
@@ -44,4 +44,4 @@ const EditCategoryModal = ({close, id, name, setCategories}: EditCategoryModal) 
     );
 };
 
-export default EditCategoryModal;
+export default EditProductTypeModal;

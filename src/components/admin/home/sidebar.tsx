@@ -98,10 +98,11 @@ const Sidebar = ({currentNav, setNav}: TSidebarProps) => {
                         currentNav={currentNav}
                         setNav={() => {
                             setNav(7);
-                            handleAccordion(0);}
-                        }
+                            handleAccordion(0);
+                        }}
                         title='Заказы'
                         isImageArrow={false}
+                        classProp='pl-0'
                     />
                 </li>
             </ul>

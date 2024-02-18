@@ -19,7 +19,6 @@ const NewBrandModal = ({close, setBrands}: NewBrandModalProps) => {
             .then((res) => {
                 setBrands(prev => [...prev, res.data])
                 close()
-                setName('')
             })
     };
 
@@ -27,7 +26,7 @@ const NewBrandModal = ({close, setBrands}: NewBrandModalProps) => {
         <Modal close={close}>
             <NewModal
                 title='Добавить новый бренд товаров'
-                autoFocus={true}
+                close={close}
                 value={name}
                 setValue={setName}
                 handleNewFetch={addNewBrandFetch}

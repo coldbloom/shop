@@ -2,17 +2,17 @@ import React from 'react';
 import {ICategoryResponse} from "@/api/category/types"
 import { MdOutlineDelete } from "react-icons/md";
 import { MdOutlineModeEdit } from "react-icons/md";
-import EditCategoryModal from "@/components/admin/categories/editCategoryModal";
-import DeleteCategoryModal from "@/components/admin/categories/deleteCategoryModal";
 import { IEditModal, IDelModal} from "@/types/modal"
+import {IProductType} from "@/types/IProductType";
+import EditProductTypeModal from "@/components/admin/additionaly/productTypes/editProductTypeModal";
+import DeleteProductTypeModal from "@/components/admin/additionaly/productTypes/deleteProductTypeModal";
 
-type CategoryTableProps = {
-    categories: ICategoryResponse[] | [],
-    setCategories: React.Dispatch<React.SetStateAction<ICategoryResponse[]>>
+type TProductTypeTableProps = {
+    productTypes: IProductType[] | [],
+    setProductTypes: React.Dispatch<React.SetStateAction<IProductType[]>>
 }
 
-
-const CategoryTable = ({categories, setCategories}: CategoryTableProps) => {
+const ProductTypeTable = ({productTypes, setProductTypes}: TProductTypeTableProps) => {
     const [editModal, setEditModal] = React.useState<IEditModal>({ open: false, newName: '', id: null})
     const [delModal, setDelModal] = React.useState<IDelModal>({ open: false, id: null })
 
@@ -35,7 +35,6 @@ const CategoryTable = ({categories, setCategories}: CategoryTableProps) => {
             id: categoryId
         })
 
-
     return (
         <div className="w-full">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -53,7 +52,7 @@ const CategoryTable = ({categories, setCategories}: CategoryTableProps) => {
                 </tr>
                 </thead>
                 <tbody>
-                {categories && categories.map((item, idx) => (
+                {productTypes && productTypes.map((item, idx) => (
                     <tr key={idx} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex justify-center text-center">
                             {item.id}
@@ -79,22 +78,22 @@ const CategoryTable = ({categories, setCategories}: CategoryTableProps) => {
             </table>
 
             { editModal.open &&
-                <EditCategoryModal
-                    close={closeEditModal}
+                <EditProductTypeModal
                     id={editModal.id}
+                    close={closeEditModal}
                     name={editModal.newName}
-                    setCategories={setCategories}
+                    setProductTypes={setProductTypes}
                 />
             }
             { delModal.open &&
-                <DeleteCategoryModal
+                <DeleteProductTypeModal
                     id={delModal.id}
                     close={closeDelModal}
-                    setCategories={setCategories}
+                    setProductTypes={setProductTypes}
                 />
             }
         </div>
     );
 };
 
-export default CategoryTable;
+export default ProductTypeTable;

@@ -5,6 +5,7 @@ import NewBrandsModal from "@/components/admin/additionaly/productBrands/newBran
 import BrandsTable from "@/components/admin/additionaly/productBrands/brandsTable";
 import axios from "axios";
 import Endpoints from "@/api/endpoints";
+import LoaderLayout from "@/utils/components/loader/loaderLayout";
 
 const ProductBrands = () => {
     const [openNewBrandsModal, setOpenModal] = React.useState<boolean>(false)
@@ -16,32 +17,34 @@ const ProductBrands = () => {
             .then(res => setBrands(res.data))
     }, [])
 
-    const closeOpenModal = () => setOpenModal(false)
+    const closeModal = () => setOpenModal(false)
 
     console.log(brands)
     return (
-        <div className='p-4 relative'>
-            <div className='flex flex-row justify-between pb-4 pl-6'>
-                <h1 className='text-2xl font-semibold'>Бренды</h1>
-                <IoIosAddCircleOutline
-                    size={32}
-                    className='cursor-pointer'
-                    onClick={() => setOpenModal(true)}
-                />
-            </div>
+        <LoaderLayout loading={brands.length === 0}>
+            <div className='p-4 relative'>
+                <div className='flex flex-row justify-between pb-4 pl-6'>
+                    <h1 className='text-2xl font-semibold'>Бренды</h1>
+                    <IoIosAddCircleOutline
+                        size={32}
+                        className='cursor-pointer'
+                        onClick={() => setOpenModal(true)}
+                    />
+                </div>
 
-            { openNewBrandsModal &&
-                <NewBrandsModal
-                    close={closeOpenModal}
+                {openNewBrandsModal &&
+                    <NewBrandsModal
+                        close={closeModal}
+                        setBrands={setBrands}
+                    />
+                }
+
+                <BrandsTable
+                    brands={brands}
                     setBrands={setBrands}
                 />
-            }
-
-            <BrandsTable
-                brands={brands}
-                setBrands={setBrands}
-            />
-        </div>
+            </div>
+        </LoaderLayout>
     );
 };
 

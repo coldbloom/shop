@@ -34,6 +34,7 @@ const EditBrandsModal = ({close, id, name, setBrands}: TEditBrandsModalProps) =>
         <Modal close={close}>
             <EditModal
                 title='Изменить наименование бренда'
+                close={close}
                 name={name}
                 value={value}
                 setValue={setValue}

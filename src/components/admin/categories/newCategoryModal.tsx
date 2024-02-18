@@ -19,21 +19,14 @@ const NewCategoryModal = ({close, setCategories}: NewCategoryModalProps) => {
             .then(res => {
                 setCategories(prev => [...prev, res.data])
                 close()
-                setName('')
             })
     };
-
-    React.useEffect(() => {
-        return () => {
-            console.log('NewCategory unmounting')
-        }
-    }, [])
 
     return (
         <Modal close={close}>
             <NewModal
                 title='Добавить новую категорию'
-                autoFocus={true}
+                close={close}
                 value={name}
                 setValue={setName}
                 handleNewFetch={addNewCategoryFetch}

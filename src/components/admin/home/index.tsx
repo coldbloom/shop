@@ -42,7 +42,7 @@ const AdminHome = () => {
             <div className='flex flex-col w-[calc(100%-250px)] ml-[250px]'>
                 <Header />
 
-                <main>
+                <>
                     {
                         {
                             1: <NewProduct />,
@@ -56,7 +56,7 @@ const AdminHome = () => {
                             7: <Orders />,
                         }[currentNav]
                     }
-                </main>
+                </>
             </div>
         </div>
     );
