@@ -3,14 +3,16 @@ import {ICategoryResponse} from "@/api/category/types";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import {classNames} from "@/utils/classNames";
 import {IGender} from "@/components/admin/products/newProductModal";
+import {IProductType} from "@/types/IProductType";
 
 type ComboboxProps = {
     data: ICategoryResponse[],
     value: ICategoryResponse | null,
-    setValue: (value: ICategoryResponse | IGender, name: string) => void,
-    name: string
+    setValue: (value: ICategoryResponse | IGender | IProductType, name: string) => void,
+    name: string,
+    placeholder: string
 }
-const Combobox = ({data, value, setValue, name}: ComboboxProps) => {
+const Combobox = ({data, value, setValue, name, placeholder}: ComboboxProps) => {
     const [isOpen, setIsOpen] = React.useState(false)
     const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -38,7 +40,7 @@ const Combobox = ({data, value, setValue, name}: ComboboxProps) => {
                  onClick={() => setIsOpen(!isOpen)}
             >
                 <p className="">
-                    {value ? value.name : 'Выберите категорию'}
+                    {value ? value.name : placeholder}
                 </p>
                 <MdKeyboardArrowDown className='ml-2' size={20}/>
             </div>
