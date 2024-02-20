@@ -7,6 +7,7 @@ import ProductSizeTables from "@/components/admin/additionaly/productSizes/produ
 import axios from "axios";
 import Endpoints from "@/api/endpoints";
 
+
 const ProductSizes = () => {
     const [openNewSizeModal, setOpenModal] = React.useState<boolean>(false)
     const [sizes, setSizes] = React.useState<ISize[]>([])
@@ -24,6 +25,7 @@ const ProductSizes = () => {
     React.useEffect(() => {
         console.log(sizes)
     }, [sizes])
+
 
     return (
         <LoaderLayout loading={sizes.length === 0}>
@@ -45,7 +47,19 @@ const ProductSizes = () => {
                 }
 
                 <ProductSizeTables
-                    sizes={sizes}
+                    title='Одежда'
+                    sizes={sizes.filter(size => size.typeId === 1)}
+                    setSizes={setSizes}
+                />
+
+                <ProductSizeTables
+                    title='Обувь'
+                    sizes={
+                        sizes
+                            .filter(size => size.typeId === 2)
+                            .sort((a, b) => Number(a.name) - Number(b.name))
+                    }
+                    setSizes={setSizes}
                 />
             </div>
         </LoaderLayout>

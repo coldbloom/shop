@@ -28,6 +28,10 @@ const NewSizeModal = ({close, setSizes}: TNewSizeModalProps) => {
             .then(res => setTypes(res.data))
     }, [])
 
+    React.useEffect(() => {
+        console.log(formData)
+    }, [formData])
+
     const changeFormData = (value: IProductType | string, key: string) => {
         setFormData(prev => ({...prev, [key]: value}))
     }
@@ -35,9 +39,9 @@ const NewSizeModal = ({close, setSizes}: TNewSizeModalProps) => {
     const handleNewSizeFetch = () => {
         const {name, type} = formData;
         axiosInstance
-            .post<IProductType[]>(Endpoints.SIZE, { name, 'typeId': type?.id})
+            .post<ISize>(Endpoints.SIZE, { name, 'typeId': type?.id})
             .then(res => {
-                setTypes(res.data)
+                setSizes(prev => [...prev, res.data])
             })
         close();
     }
@@ -64,7 +68,7 @@ const NewSizeModal = ({close, setSizes}: TNewSizeModalProps) => {
                             />
                             <input
                                 type="text"
-                                autoFocus={true}
+                                autoFocus={false}
                                 className="block w-full rounded-md mt-2 border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="Введите наименование"
                                 value={formData.name}
