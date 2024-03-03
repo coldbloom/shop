@@ -4,7 +4,7 @@ import Combobox from "@/utils/components/combobox";
 import TextAreaField from "@/utils/components/textAreaField/TextAreaField";
 import {TFormData, genders} from "./productTypes";
 import {useAppSelector} from "@/utils/hooks/redux";
-import {fetchCategories} from '@/store/reducers/ActionCreators'
+import {fetchCategories, fetchBrands} from '@/store/reducers/ActionCreators'
 import {useAppDispatch, AppDispatch} from '@/store'
 
 type TInfoProps = {
@@ -14,9 +14,11 @@ type TInfoProps = {
 const Info: React.FC<TInfoProps> = ({formData, handleChangeValue}) => {
     const dispatch = useAppDispatch()
     const {categories} = useAppSelector(state => state.categoryReducer)
+    const {brands} = useAppSelector(state => state.brandReducer)
 
     React.useEffect(() => {
         dispatch(fetchCategories())
+        dispatch(fetchBrands())
     }, [])
 
     return (
@@ -70,10 +72,14 @@ const Info: React.FC<TInfoProps> = ({formData, handleChangeValue}) => {
             </div>
 
             <div className="sm:col-span-6">
-                <InputField
-                    label='Бренд'
+                <label
+                    className="block text-sm font-medium leading-6 text-gray-900">
+                    Бренд
+                </label>
+                <Combobox
                     value={formData.brand}
                     setValue={handleChangeValue}
+                    data={brands}
                     name='brand'
                 />
             </div>

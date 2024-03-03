@@ -1,4 +1,5 @@
 const Endpoints ={
+    BASE_URL: `${process.env.NEXT_PUBLIC_SERVER_URL}`,
     AUTH:{
         LOGIN: `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/login`,
         REFRESH: `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/refresh`,

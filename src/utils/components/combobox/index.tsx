@@ -1,12 +1,13 @@
 import React from 'react';
 import {ICategoryResponse} from "@/api/category/types";
+import {IBrand} from "@/types/IBrand"
 import { MdKeyboardArrowDown } from "react-icons/md";
 import {classNames} from "@/utils/classNames";
 import {IGender} from "@/components/admin/products/newProductModal";
 import {IProductType} from "@/types/IProductType";
 
 type ComboboxProps = {
-    data: ICategoryResponse[],
+    data: ICategoryResponse[] | IBrand[],
     value: ICategoryResponse | null,
     setValue: (value: ICategoryResponse | IGender | IProductType, name: string) => void,
     name: string,

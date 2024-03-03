@@ -48,7 +48,7 @@ const ProductSizes = () => {
 
                 <ProductSizeTables
                     title='Одежда'
-                    sizes={sizes.filter(size => size.typeId === 1)}
+                    sizes={sizes.filter(size => size.typeId === 2)}
                     setSizes={setSizes}
                 />
 
@@ -56,7 +56,7 @@ const ProductSizes = () => {
                     title='Обувь'
                     sizes={
                         sizes
-                            .filter(size => size.typeId === 2)
+                            .filter(size => size.typeId === 3)
                             .sort((a, b) => Number(a.name) - Number(b.name))
                     }
                     setSizes={setSizes}
